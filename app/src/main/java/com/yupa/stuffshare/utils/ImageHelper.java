@@ -1,4 +1,4 @@
-package com.yupa.suffshare.utils;
+package com.yupa.stuffshare.utils;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;

@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package com.yupa.suffshare.camera;
+package com.yupa.stuffshare.camera;
 
 import android.content.Context;
 import android.util.AttributeSet;

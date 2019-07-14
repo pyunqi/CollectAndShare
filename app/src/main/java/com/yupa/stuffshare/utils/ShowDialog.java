@@ -1,4 +1,4 @@
-package com.yupa.suffshare.utils;
+package com.yupa.stuffshare.utils;
 
 import android.content.Context;
 import android.view.Gravity;

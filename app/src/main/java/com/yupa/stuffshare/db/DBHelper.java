@@ -1,4 +1,4 @@
-package com.yupa.suffshare.db;
+package com.yupa.stuffshare.db;
 
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;

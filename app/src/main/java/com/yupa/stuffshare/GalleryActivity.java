@@ -1,4 +1,4 @@
-package com.yupa.suffshare;
+package com.yupa.stuffshare;
 
 import android.net.Uri;
 import android.os.Bundle;
@@ -9,11 +9,11 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mindorks.placeholderview.PlaceHolderView;
-import com.yupa.suffshare.db.Stuff;
-import com.yupa.suffshare.fragments.AboutCASFragment;
-import com.yupa.suffshare.stuff.StuffManagement;
-import com.yupa.suffshare.utils.GalleryItem;
-import com.yupa.suffshare.utils.ImageHelper;
+import com.yupa.stuffshare.db.Stuff;
+import com.yupa.stuffshare.fragments.AboutCASFragment;
+import com.yupa.stuffshare.stuff.StuffManagement;
+import com.yupa.stuffshare.utils.GalleryItem;
+import com.yupa.stuffshare.utils.ImageHelper;
 
 public class GalleryActivity extends AppCompatActivity implements AboutCASFragment.OnFragmentInteractionListener {
 

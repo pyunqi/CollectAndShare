@@ -1,4 +1,4 @@
-package com.yupa.suffshare.camera;
+package com.yupa.stuffshare.camera;
 
 import android.Manifest;
 import android.app.Activity;
@@ -38,9 +38,9 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
 
-import com.yupa.suffshare.R;
-import com.yupa.suffshare.AddStuffActivity;
-import com.yupa.suffshare.utils.ShowMessage;
+import com.yupa.stuffshare.AddStuffActivity;
+import com.yupa.stuffshare.R;
+import com.yupa.stuffshare.utils.ShowMessage;
 
 import java.io.File;
 import java.io.FileOutputStream;

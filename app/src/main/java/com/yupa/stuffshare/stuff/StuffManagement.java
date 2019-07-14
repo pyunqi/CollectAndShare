@@ -1,9 +1,9 @@
-package com.yupa.suffshare.stuff;
+package com.yupa.stuffshare.stuff;
 
 import android.content.Context;
 
-import com.yupa.suffshare.db.DBController;
-import com.yupa.suffshare.db.Stuff;
+import com.yupa.stuffshare.db.DBController;
+import com.yupa.stuffshare.db.Stuff;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -11,7 +11,7 @@ import java.util.List;
 
 public class StuffManagement {
 
-    private  static  DBController dbController;
+    private  static DBController dbController;
 
     public static List<Stuff> getStuffs(Context context) {
 

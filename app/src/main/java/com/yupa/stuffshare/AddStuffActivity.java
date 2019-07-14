@@ -1,4 +1,4 @@
-package com.yupa.suffshare;
+package com.yupa.stuffshare;
 
 import android.Manifest;
 import android.app.Dialog;
@@ -33,10 +33,10 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.yupa.suffshare.db.DBController;
-import com.yupa.suffshare.db.Stuff;
-import com.yupa.suffshare.fragments.AboutCASFragment;
-import com.yupa.suffshare.utils.ShowMessage;
+import com.yupa.stuffshare.db.DBController;
+import com.yupa.stuffshare.db.Stuff;
+import com.yupa.stuffshare.fragments.AboutCASFragment;
+import com.yupa.stuffshare.utils.ShowMessage;
 
 import java.io.File;
 

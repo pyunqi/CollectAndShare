@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.yupa.suffshare">
+    package="com.yupa.stuffshare">
 
     <uses-permission android:name="android.permission.CAMERA" />
 
@@ -30,12 +30,12 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/filepaths" />
         </provider>
-        <activity android:name="com.yupa.suffshare.EditStuffActivity"
+        <activity android:name="com.yupa.stuffshare.EditStuffActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" >
         </activity>
-        <activity android:name="com.yupa.suffshare.GalleryActivity"
+        <activity android:name="com.yupa.stuffshare.GalleryActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name="com.yupa.suffshare.StuffAdapterActivity" />
+        <activity android:name="com.yupa.stuffshare.StuffAdapterActivity" />
 
         <meta-data
             android:name="com.google.android.gms.version"
@@ -48,13 +48,13 @@
             android:name="org.apache.http.legacy"
             android:required="false" />
 
-        <activity android:name="com.yupa.suffshare.AddStuffActivity"
+        <activity android:name="com.yupa.stuffshare.AddStuffActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.yupa.suffshare.camera.Camera"
+            android:name="com.yupa.stuffshare.camera.Camera"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
-            android:name="com.yupa.suffshare.SplashActivity"
+            android:name="com.yupa.stuffshare.SplashActivity"
             android:theme="@style/SlashTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -63,7 +63,7 @@
             </intent-filter>
         </activity>
         <activity
-            android:name="com.yupa.suffshare.MainActivity"
+            android:name="com.yupa.stuffshare.MainActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
     </application>
 

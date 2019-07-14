@@ -1,4 +1,4 @@
-package com.yupa.suffshare;
+package com.yupa.stuffshare;
 
 import android.content.Context;
 import android.content.DialogInterface;
@@ -21,10 +21,10 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
-import com.yupa.suffshare.camera.Camera;
-import com.yupa.suffshare.fragments.AboutCASFragment;
-import com.yupa.suffshare.stuff.StuffAdapter;
-import com.yupa.suffshare.stuff.StuffManagement;
+import com.yupa.stuffshare.camera.Camera;
+import com.yupa.stuffshare.fragments.AboutCASFragment;
+import com.yupa.stuffshare.stuff.StuffAdapter;
+import com.yupa.stuffshare.stuff.StuffManagement;
 
 import java.io.File;
 

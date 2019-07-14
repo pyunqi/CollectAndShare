@@ -1,4 +1,4 @@
-package com.yupa.suffshare.db;
+package com.yupa.stuffshare.db;
 
 import java.io.Serializable;
 

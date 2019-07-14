@@ -1,7 +1,8 @@
-package com.yupa.suffshare;
+package com.yupa.stuffshare;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+
 
 public class StuffAdapterActivity extends AppCompatActivity {
 

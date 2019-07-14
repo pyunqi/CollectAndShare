@@ -1,4 +1,4 @@
-package com.yupa.suffshare.stuff;
+package com.yupa.stuffshare.stuff;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -8,9 +8,9 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.yupa.suffshare.R;
-import com.yupa.suffshare.db.Stuff;
-import com.yupa.suffshare.utils.ImageHelper;
+import com.yupa.stuffshare.R;
+import com.yupa.stuffshare.db.Stuff;
+import com.yupa.stuffshare.utils.ImageHelper;
 
 import java.util.List;
 
