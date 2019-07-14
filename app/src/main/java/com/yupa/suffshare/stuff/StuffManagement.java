@@ -1,0 +1,67 @@
+package com.yupa.suffshare.stuff;
+
+import android.content.Context;
+
+import com.yupa.suffshare.db.DBController;
+import com.yupa.suffshare.db.Stuff;
+
+import java.io.File;
+import java.util.ArrayList;
+import java.util.List;
+
+public class StuffManagement {
+
+    private  static  DBController dbController;
+
+    public static List<Stuff> getStuffs(Context context) {
+
+        List<Stuff> stuffs = new ArrayList<>();
+        dbController = new DBController(context);
+        if (dbController.getAllStuff().isEmpty()) {
+
+        } else {
+            for (Stuff stuff : dbController.getAllStuff()) {
+                stuffs.add(stuff);
+            }
+        }
+        return stuffs;
+    }
+
+    public static List<Stuff> getStuffsByName(Context context, String name) {
+
+        List<Stuff> stuffs = new ArrayList<>();
+        dbController = new DBController(context);
+        if (dbController.getAllStuff().isEmpty()) {
+
+        } else {
+            for (Stuff stuff : dbController.getAllStuffByName(name)) {
+                stuffs.add(stuff);
+            }
+        }
+        return stuffs;
+    }
+
+    public static void deleteStuff(Context context,int _id,String path){
+        dbController = new DBController(context);
+        dbController.deleteStuff(_id);
+        DelFile dF = new DelFile(path);
+        dF.start();
+    }
+
+
+    static class DelFile extends Thread {
+
+        private String fPath;
+        DelFile(String path){
+            fPath = path;
+        }
+
+        @Override
+        public void run() {
+            super.run();
+            File delFile = new File(fPath);
+            delFile.delete();
+        }
+    }
+
+}

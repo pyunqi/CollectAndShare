@@ -1,3 +1,23 @@
 <resources>
-    <string name="app_name">CollectAndShare</string>
+    <string name="app_name">C&#038;S Stuff </string>
+    <string name="app_slash_title">Collect &#038; Share</string>
+
+    <string name="btnAdd">ADD</string>
+    <string name="btnSearch">Search</string>
+    <string name="btnShare">Share</string>
+
+    <string name="picture">Take Photo</string>
+
+    <string name="about">About</string>
+    <string name="g_mode">Gallery Mode</string>
+    <string name="l_mode">List Mode</string>
+    <string name="ref_cas">https://www.freepik.com</string>
+    <string name="btnGallery">Gallery</string>
+
+
+    <!--Database-->
+    <string name="dbName">CAS</string>
+
+    <!--Google map api key-->
+    <string name="google_map_api_key">AIzaSyBOhJBQieHp4JRRMe9f9CpfJL6tOzyZQlk</string>
 </resources>
