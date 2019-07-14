@@ -33,12 +33,12 @@ public class MutedVideoView extends SurfaceView
     private Map<String, String> mHeaders;
 
     // all possible internal states
-    private static final int STATE_ERROR              = -1;
-    private static final int STATE_IDLE               = 0;
-    private static final int STATE_PREPARING          = 1;
-    private static final int STATE_PREPARED           = 2;
-    private static final int STATE_PLAYING            = 3;
-    private static final int STATE_PAUSED             = 4;
+    private static final int STATE_ERROR = -1;
+    private static final int STATE_IDLE = 0;
+    private static final int STATE_PREPARING = 1;
+    private static final int STATE_PREPARED = 2;
+    private static final int STATE_PLAYING = 3;
+    private static final int STATE_PAUSED = 4;
     private static final int STATE_PLAYBACK_COMPLETED = 5;
 
     // mCurrentState is a VideoView object's current state.
@@ -47,26 +47,26 @@ public class MutedVideoView extends SurfaceView
     // calling pause() intends to bring the object to a target state
     // of STATE_PAUSED.
     private int mCurrentState = STATE_IDLE;
-    private int mTargetState  = STATE_IDLE;
+    private int mTargetState = STATE_IDLE;
 
     // All the stuff we need for playing and showing a video
     private SurfaceHolder mSurfaceHolder = null;
     private MediaPlayer mMediaPlayer = null;
-    private int         mAudioSession;
-    private int         mVideoWidth;
-    private int         mVideoHeight;
-    private int         mSurfaceWidth;
-    private int         mSurfaceHeight;
+    private int mAudioSession;
+    private int mVideoWidth;
+    private int mVideoHeight;
+    private int mSurfaceWidth;
+    private int mSurfaceHeight;
     private MediaController mMediaController;
     private MediaPlayer.OnCompletionListener mOnCompletionListener;
     private MediaPlayer.OnPreparedListener mOnPreparedListener;
-    private int         mCurrentBufferPercentage;
+    private int mCurrentBufferPercentage;
     private MediaPlayer.OnErrorListener mOnErrorListener;
     private MediaPlayer.OnInfoListener mOnInfoListener;
-    private int         mSeekWhenPrepared;  // recording the seek position while preparing
-    private boolean     mCanPause;
-    private boolean     mCanSeekBack;
-    private boolean     mCanSeekForward;
+    private int mSeekWhenPrepared;  // recording the seek position while preparing
+    private boolean mCanPause;
+    private boolean mCanSeekBack;
+    private boolean mCanSeekForward;
 
     // Splash Screen
     public MutedVideoView(Context context) {
@@ -84,7 +84,8 @@ public class MutedVideoView extends SurfaceView
         initVideoView();
     }
 
-    @TargetApi(Build.VERSION_CODES.LOLLIPOP) public MutedVideoView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
+    @TargetApi(Build.VERSION_CODES.LOLLIPOP)
+    public MutedVideoView(Context context, AttributeSet attrs, int defStyleAttr, int defStyleRes) {
         super(context, attrs, defStyleAttr, defStyleRes);
         initVideoView();
     }
@@ -109,10 +110,10 @@ public class MutedVideoView extends SurfaceView
                 height = heightSpecSize;
 
                 // for compatibility, we adjust size based on aspect ratio
-                if ( mVideoWidth * height  < width * mVideoHeight ) {
+                if (mVideoWidth * height < width * mVideoHeight) {
                     //Log.i("@@@", "image too wide, correcting");
                     width = height * mVideoWidth / mVideoHeight;
-                } else if ( mVideoWidth * height  > width * mVideoHeight ) {
+                } else if (mVideoWidth * height > width * mVideoHeight) {
                     //Log.i("@@@", "image too tall, correcting");
                     height = width * mVideoHeight / mVideoWidth;
                 }
@@ -179,7 +180,7 @@ public class MutedVideoView extends SurfaceView
         requestFocus();
         mPendingSubtitleTracks = new Vector<Pair<InputStream, MediaFormat>>();
         mCurrentState = STATE_IDLE;
-        mTargetState  = STATE_IDLE;
+        mTargetState = STATE_IDLE;
     }
 
     /**
@@ -227,7 +228,7 @@ public class MutedVideoView extends SurfaceView
             mMediaPlayer.release();
             mMediaPlayer = null;
             mCurrentState = STATE_IDLE;
-            mTargetState  = STATE_IDLE;
+            mTargetState = STATE_IDLE;
         }
     }
 
@@ -236,11 +237,7 @@ public class MutedVideoView extends SurfaceView
             // not ready for playback just yet, will try again later
             return;
         }
-//      AudioManager am = (AudioManager) getContext().getSystemService(Context.AUDIO_SERVICE);
-//      am.requestAudioFocus(null, AudioManager.STREAM_MUSIC, AudioManager.AUDIOFOCUS_GAIN);
 
-        // we shouldn't clear the target state, because somebody might have
-        // called start() previously
         release(false);
         try {
             mMediaPlayer = new MediaPlayer();
@@ -299,7 +296,7 @@ public class MutedVideoView extends SurfaceView
         if (mMediaPlayer != null && mMediaController != null) {
             mMediaController.setMediaPlayer(this);
             View anchorView = this.getParent() instanceof View ?
-                    (View)this.getParent() : this;
+                    (View) this.getParent() : this;
             mMediaController.setAnchorView(anchorView);
             mMediaController.setEnabled(isInPlaybackState());
         }
@@ -321,21 +318,7 @@ public class MutedVideoView extends SurfaceView
         public void onPrepared(MediaPlayer mp) {
             mCurrentState = STATE_PREPARED;
 
-            // Get the capabilities of the player for this stream
-//         Metadata data = mp.getMetadata(MediaPlayer.METADATA_ALL,
-//            MediaPlayer.BYPASS_METADATA_FILTER);
-
-//         if (data != null) {
-//            mCanPause = !data.has(Metadata.PAUSE_AVAILABLE)
-//               || data.getBoolean(Metadata.PAUSE_AVAILABLE);
-//            mCanSeekBack = !data.has(Metadata.SEEK_BACKWARD_AVAILABLE)
-//               || data.getBoolean(Metadata.SEEK_BACKWARD_AVAILABLE);
-//            mCanSeekForward = !data.has(Metadata.SEEK_FORWARD_AVAILABLE)
-//               || data.getBoolean(Metadata.SEEK_FORWARD_AVAILABLE);
-//         } else {
             mCanPause = mCanSeekBack = mCanSeekForward = true;
-//         }
-
             if (mOnPreparedListener != null) {
                 mOnPreparedListener.onPrepared(mMediaPlayer);
             }
@@ -395,7 +378,7 @@ public class MutedVideoView extends SurfaceView
 
     private MediaPlayer.OnInfoListener mInfoListener =
             new MediaPlayer.OnInfoListener() {
-                public  boolean onInfo(MediaPlayer mp, int arg1, int arg2) {
+                public boolean onInfo(MediaPlayer mp, int arg1, int arg2) {
                     if (mOnInfoListener != null) {
                         mOnInfoListener.onInfo(mp, arg1, arg2);
                     }
@@ -420,37 +403,6 @@ public class MutedVideoView extends SurfaceView
                         }
                     }
 
-                    /* Otherwise, pop up an error dialog so the user knows that
-                     * something bad has happened. Only try and pop up the dialog
-                     * if we're attached to a window. When we're going away and no
-                     * longer have a window, don't bother showing the user an error.
-                     */
-//            if (getWindowToken() != null) {
-//               Resources r = getContext().getResources();
-//               int messageId;
-//
-//               if (framework_err == MediaPlayer.MEDIA_ERROR_NOT_VALID_FOR_PROGRESSIVE_PLAYBACK) {
-//                  messageId = com.android.internal.R.string.VideoView_error_text_invalid_progressive_playback;
-//               } else {
-//                  messageId = com.android.internal.R.string.VideoView_error_text_unknown;
-//               }
-//
-//               new AlertDialog.Builder(getContext())
-//                  .setMessage(messageId)
-//                  .setPositiveButton(com.android.internal.R.string.VideoView_error_button,
-//                     new DialogInterface.OnClickListener() {
-//                        public void onClick(DialogInterface dialog, int whichButton) {
-//                                        /* If we get here, there is no onError listener, so
-//                                         * at least inform them that the video is over.
-//                                         */
-//                           if (mOnCompletionListener != null) {
-//                              mOnCompletionListener.onCompletion(mMediaPlayer);
-//                           }
-//                        }
-//                     })
-//                  .setCancelable(false)
-//                  .show();
-//            }
                     return true;
                 }
             };
@@ -468,8 +420,7 @@ public class MutedVideoView extends SurfaceView
      *
      * @param l The callback that will be run
      */
-    public void setOnPreparedListener(MediaPlayer.OnPreparedListener l)
-    {
+    public void setOnPreparedListener(MediaPlayer.OnPreparedListener l) {
         mOnPreparedListener = l;
     }
 
@@ -479,8 +430,7 @@ public class MutedVideoView extends SurfaceView
      *
      * @param l The callback that will be run
      */
-    public void setOnCompletionListener(MediaPlayer.OnCompletionListener l)
-    {
+    public void setOnCompletionListener(MediaPlayer.OnCompletionListener l) {
         mOnCompletionListener = l;
     }
 
@@ -492,8 +442,7 @@ public class MutedVideoView extends SurfaceView
      *
      * @param l The callback that will be run
      */
-    public void setOnErrorListener(MediaPlayer.OnErrorListener l)
-    {
+    public void setOnErrorListener(MediaPlayer.OnErrorListener l) {
         mOnErrorListener = l;
     }
 
@@ -507,14 +456,12 @@ public class MutedVideoView extends SurfaceView
         mOnInfoListener = l;
     }
 
-    SurfaceHolder.Callback mSHCallback = new SurfaceHolder.Callback()
-    {
+    SurfaceHolder.Callback mSHCallback = new SurfaceHolder.Callback() {
         public void surfaceChanged(SurfaceHolder holder, int format,
-                                   int w, int h)
-        {
+                                   int w, int h) {
             mSurfaceWidth = w;
             mSurfaceHeight = h;
-            boolean isValidState =  (mTargetState == STATE_PLAYING);
+            boolean isValidState = (mTargetState == STATE_PLAYING);
             boolean hasValidSize = (mVideoWidth == w && mVideoHeight == h);
             if (mMediaPlayer != null && isValidState && hasValidSize) {
                 if (mSeekWhenPrepared != 0) {
@@ -524,14 +471,12 @@ public class MutedVideoView extends SurfaceView
             }
         }
 
-        public void surfaceCreated(SurfaceHolder holder)
-        {
+        public void surfaceCreated(SurfaceHolder holder) {
             mSurfaceHolder = holder;
             openVideo();
         }
 
-        public void surfaceDestroyed(SurfaceHolder holder)
-        {
+        public void surfaceDestroyed(SurfaceHolder holder) {
             // after we return from this we can't use the surface any more
             mSurfaceHolder = null;
             if (mMediaController != null) mMediaController.hide();
@@ -550,7 +495,7 @@ public class MutedVideoView extends SurfaceView
             mPendingSubtitleTracks.clear();
             mCurrentState = STATE_IDLE;
             if (cleartargetstate) {
-                mTargetState  = STATE_IDLE;
+                mTargetState = STATE_IDLE;
             }
         }
     }
@@ -572,8 +517,7 @@ public class MutedVideoView extends SurfaceView
     }
 
     @Override
-    public boolean onKeyDown(int keyCode, KeyEvent event)
-    {
+    public boolean onKeyDown(int keyCode, KeyEvent event) {
         boolean isKeyCodeSupported = keyCode != KeyEvent.KEYCODE_BACK &&
                 keyCode != KeyEvent.KEYCODE_VOLUME_UP &&
                 keyCode != KeyEvent.KEYCODE_VOLUME_DOWN &&
@@ -725,38 +669,23 @@ public class MutedVideoView extends SurfaceView
     protected void onAttachedToWindow() {
         super.onAttachedToWindow();
 
-//      if (mSubtitleWidget != null) {
-//         mSubtitleWidget.onAttachedToWindow();
-//      }
     }
 
     @Override
     protected void onDetachedFromWindow() {
         super.onDetachedFromWindow();
 
-//      if (mSubtitleWidget != null) {
-//         mSubtitleWidget.onDetachedFromWindow();
-//      }
     }
 
     @Override
     protected void onLayout(boolean changed, int left, int top, int right, int bottom) {
         super.onLayout(changed, left, top, right, bottom);
 
-//      if (mSubtitleWidget != null) {
-//         measureAndLayoutSubtitleWidget();
-//      }
     }
 
     @Override
     public void draw(Canvas canvas) {
         super.draw(canvas);
 
-//      if (mSubtitleWidget != null) {
-//         final int saveCount = canvas.save();
-//         canvas.translate(getPaddingLeft(), getPaddingTop());
-//         mSubtitleWidget.draw(canvas);
-//         canvas.restoreToCount(saveCount);
-//      }
     }
 }

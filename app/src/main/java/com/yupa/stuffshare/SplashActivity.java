@@ -18,7 +18,7 @@ public class SplashActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_splash);
-        MutedVideoView vView = (MutedVideoView) findViewById(R.id.video_view);
+        MutedVideoView vView = findViewById(R.id.video_view);
         Uri video = Uri.parse("android.resource://" + getPackageName() + "/"
                 + R.raw.splashn);
 
