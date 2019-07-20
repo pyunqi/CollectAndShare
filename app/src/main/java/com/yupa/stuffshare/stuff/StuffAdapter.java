@@ -9,7 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.yupa.stuffshare.R;
-import com.yupa.stuffshare.db.Stuff;
+import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.utils.ImageHelper;
 
 import java.util.List;

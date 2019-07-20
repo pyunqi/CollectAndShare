@@ -9,7 +9,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.mindorks.placeholderview.PlaceHolderView;
-import com.yupa.stuffshare.db.Stuff;
+import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
 import com.yupa.stuffshare.stuff.StuffManagement;
 import com.yupa.stuffshare.utils.GalleryItem;
@@ -19,16 +19,13 @@ public class GalleryActivity extends AppCompatActivity implements AboutCASFragme
 
     private PlaceHolderView mGalleryView;
     private Handler handler = new Handler();
-    AboutCASFragment casFragment  = new AboutCASFragment();
+    AboutCASFragment casFragment = new AboutCASFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_gallery);
-
-//        //add tool bar
         Toolbar myToolbar = findViewById(R.id.gallery_toolbar);
-        myToolbar.setTitle("C & S Stuff Gallery");
         setSupportActionBar(myToolbar);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);

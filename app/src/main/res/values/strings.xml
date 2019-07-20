@@ -19,4 +19,7 @@
 
     <!--Google map api key-->
     <string name="google_map_api_key">AIzaSyBOhJBQieHp4JRRMe9f9CpfJL6tOzyZQlk</string>
+
+    <!-- host related-->
+
 </resources>

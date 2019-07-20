@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -34,9 +35,10 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.yupa.stuffshare.db.DBController;
-import com.yupa.stuffshare.db.Stuff;
+import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
 import com.yupa.stuffshare.utils.ShowMessage;
+import com.yupa.stuffshare.webservice.ManageStuff;
 
 import java.io.File;
 
@@ -65,7 +67,6 @@ public class AddStuffActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_stuff);
         Toolbar myToolbar = findViewById(R.id.add_toolbar);
-        myToolbar.setTitle("C & S Stuff Add");
         setSupportActionBar(myToolbar);
         File mPic = (File) getIntent().getExtras().get("picFile");
         ImageView iv = findViewById(R.id.ivPhoto);
@@ -167,12 +168,38 @@ public class AddStuffActivity extends AppCompatActivity {
                 stuff.set_name(name);
                 stuff.set_quantity(quantity);
                 dbController.addStuff(stuff);
-                Intent intent = new Intent(AddStuffActivity.this, MainActivity.class);
-                startActivity(intent);
-                AddStuffActivity.this.finish();
+                SubmitStuff submitStuff = new SubmitStuff();
+                submitStuff.execute(stuff);
 
             }
         });
+    }
+
+
+    private class SubmitStuff extends AsyncTask<Stuff, Integer, String> {
+        @Override
+        protected void onPreExecute() {
+            ShowMessage.showCenter(AddStuffActivity.this, "Adding new stuff");
+        }
+
+        @Override
+        protected String doInBackground(Stuff... parameters) {
+            Stuff item = parameters[0];
+            return ManageStuff.addStuff(item);
+        }
+
+        @Override
+        protected void onPostExecute(String errorStr) {
+            if (errorStr == null || errorStr.isEmpty()) {
+                ShowMessage.showCenter(AddStuffActivity.this, "Successfully add a new stuff");
+                Intent intent = new Intent(AddStuffActivity.this, MainActivity.class);
+                startActivity(intent);
+                AddStuffActivity.this.finish();
+            } else {
+                ShowMessage.showCenter(AddStuffActivity.this, errorStr);
+                return;
+            }
+        }
     }
 
     /**

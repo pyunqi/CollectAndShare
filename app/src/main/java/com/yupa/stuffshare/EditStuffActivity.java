@@ -33,7 +33,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.yupa.stuffshare.db.Stuff;
+import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.utils.ShowMessage;
 import com.yupa.stuffshare.db.DBController;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
@@ -52,23 +52,22 @@ public class EditStuffActivity extends AppCompatActivity {
     private GoogleMap mMap;
     private Location mCurrentLocation;
     private final float DEFAULT_ZOOM = 15f;
-    Stuff mStuff ;
+    Stuff mStuff;
     Button btnUpdate;
     //DB
     private DBController dbController;
     //UI
     EditText edtName, edtQuantitiy, edtTag, edtDescription;
 
-    AboutCASFragment casFragment  = new AboutCASFragment();
+    AboutCASFragment casFragment = new AboutCASFragment();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_edit_stuff);
         Toolbar myToolbar = findViewById(R.id.edit_toolbar);
-        myToolbar.setTitle("C & S Stuff Edit");
         setSupportActionBar(myToolbar);
-        mStuff= (Stuff) getIntent().getExtras().get("stuff");
+        mStuff = (Stuff) getIntent().getExtras().get("stuff");
         ImageView iv = findViewById(R.id.ivUPhoto);
         File mPic = new File(mStuff.get_picture());
         iv.setImageURI(Uri.fromFile(mPic));
@@ -83,7 +82,7 @@ public class EditStuffActivity extends AppCompatActivity {
         edtTag = findViewById(R.id.edtUTxtTag);
         edtDescription = findViewById(R.id.edtUDescription);
         edtName.setText(mStuff.get_name());
-        edtQuantitiy.setText(""+mStuff.get_quantity());
+        edtQuantitiy.setText("" + mStuff.get_quantity());
         edtDescription.setText(mStuff.get_description());
         edtTag.setText(mStuff.get_tag());
         //implement update photo later.
@@ -139,14 +138,14 @@ public class EditStuffActivity extends AppCompatActivity {
                     return;
                 }
 
-                try{
+                try {
                     quantity = Integer.parseInt(edtQuantitiy.getText().toString());
-                }catch (NumberFormatException e){
-                    ShowMessage.showCenter(EditStuffActivity.this,"need a number");
+                } catch (NumberFormatException e) {
+                    ShowMessage.showCenter(EditStuffActivity.this, "need a number");
                     return;
                 }
-                if(quantity <=0){
-                    ShowMessage.showCenter(EditStuffActivity.this,"Quantity has to be bigger than 0!");
+                if (quantity <= 0) {
+                    ShowMessage.showCenter(EditStuffActivity.this, "Quantity has to be bigger than 0!");
                     return;
                 }
                 if (TextUtils.isEmpty(tag)) {
@@ -185,7 +184,6 @@ public class EditStuffActivity extends AppCompatActivity {
 
     /**
      * detect google service available or not
-     *
      */
     public boolean isServiceOK() {
         Log.d(TAG, "is ok?");
@@ -234,9 +232,10 @@ public class EditStuffActivity extends AppCompatActivity {
         }
     }
 
-    private  void  moveCamera(LatLng latLng,float zoom){
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,zoom));
+    private void moveCamera(LatLng latLng, float zoom) {
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom));
     }
+
     /**
      * set up basic map
      */
@@ -265,7 +264,6 @@ public class EditStuffActivity extends AppCompatActivity {
 
     /**
      * request permission
-     *
      */
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {

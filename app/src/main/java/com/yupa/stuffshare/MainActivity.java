@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         Toolbar myToolbar = findViewById(R.id.cas_toolbar);
-        myToolbar.setTitle("C & S Stuff Main");
+        myToolbar.setTitle("Stuff List");
         setSupportActionBar(myToolbar);
 
         //go add new stuff

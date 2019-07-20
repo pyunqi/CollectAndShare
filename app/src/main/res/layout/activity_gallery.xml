@@ -12,7 +12,6 @@
         android:layout_height="match_parent"
         android:orientation="vertical">
 
-
         <android.support.v7.widget.Toolbar
             android:id="@+id/gallery_toolbar"
             android:layout_width="match_parent"
@@ -20,7 +19,18 @@
             android:background="?attr/colorPrimary"
             android:elevation="4dp"
             android:theme="@style/ThemeOverlay.AppCompat.ActionBar"
-            app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
+            app:popupTheme="@style/ThemeOverlay.AppCompat.Light">
+
+            <TextView
+                android:id="@+id/toolbar_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Stuff Gallery"
+                android:textColor="@color/browser_actions_title_color"
+                android:textSize="20dp" />
+        </android.support.v7.widget.Toolbar>
 
         <com.mindorks.placeholderview.PlaceHolderView
             android:id="@+id/galleryView"
@@ -28,6 +38,7 @@
             android:layout_height="wrap_content"
             android:scrollbars="vertical" />
     </LinearLayout>
+
     <FrameLayout
         android:id="@+id/g_about"
         android:layout_width="match_parent"

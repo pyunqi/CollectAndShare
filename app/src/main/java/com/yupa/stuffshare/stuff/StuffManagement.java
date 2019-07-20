@@ -3,7 +3,7 @@ package com.yupa.stuffshare.stuff;
 import android.content.Context;
 
 import com.yupa.stuffshare.db.DBController;
-import com.yupa.stuffshare.db.Stuff;
+import com.yupa.stuffshare.entity.Stuff;
 
 import java.io.File;
 import java.util.ArrayList;
