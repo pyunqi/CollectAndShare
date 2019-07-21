@@ -83,6 +83,24 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
                 alert.show();
             }
         });
+        Button btnSync = findViewById(R.id.btnSync);
+        btnSync.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+
+
+                //waring , it spend time.
+                //by anysctask
+                //get all record from server
+                //insert&update to local
+                //check file if exist
+                //download all files
+                //
+            }
+        });
+
+
 
     }
 
