@@ -7,7 +7,7 @@
     tools:context="com.yupa.stuffshare.AddStuffActivity">
     <ProgressBar
         android:id="@+id/pbHeaderProgress"
-        style="@style/Spinner"
+        style="@style/button_nor"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content" >
     </ProgressBar>
@@ -128,12 +128,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/btn_cor"
+            android:background="@drawable/button_selector"
             android:elevation="4dp"
             android:paddingLeft="70dp"
             android:paddingRight="70dp"
             android:text="Submit"
-            android:textColor="#fff" />
+            android:textColor="#00ACC1" />
     </LinearLayout>
 
     <FrameLayout

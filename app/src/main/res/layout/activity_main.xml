@@ -39,6 +39,7 @@
 
     <LinearLayout
         android:id="@+id/llvButtons"
+        android:background="@android:color/transparent"
         android:layout_width="411dp"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
@@ -55,8 +56,9 @@
             android:layout_alignTop="@+id/llvButtons"
             android:layout_margin="2dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_cor"
-            android:text="@string/btnGallery" />
+            android:background="@drawable/button_selector"
+            android:text="@string/btnGallery"
+            android:textColor="#00ACC1" />
 
         <Button
             android:id="@+id/btnAdd"
@@ -66,8 +68,10 @@
             android:layout_margin="2dp"
             android:layout_marginBottom="0dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_cor"
-            android:text="@string/btnAdd" />
+            android:background="@drawable/button_selector"
+            android:text="+"
+            android:textColor="#00ACC1"
+            android:textSize="36sp" />
 
         <Button
             android:id="@+id/btnSearch"
@@ -76,8 +80,9 @@
             android:layout_height="wrap_content"
             android:layout_margin="2dp"
             android:layout_weight="1"
-            android:background="@drawable/btn_cor"
-            android:text="@string/btnSearch" />
+            android:background="@drawable/button_selector"
+            android:text="@string/btnSearch"
+            android:textColor="#00ACC1" />
     </LinearLayout>
 
     <FrameLayout

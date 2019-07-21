@@ -36,6 +36,7 @@ import android.view.Surface;
 import android.view.TextureView;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import com.yupa.stuffshare.AddStuffActivity;
@@ -390,9 +391,9 @@ public class Camera extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_camera);
         mTextureView = findViewById(R.id.texture);
-        Button takePictureButton = findViewById(R.id.btnTakePic);
+        ImageView takePicture = findViewById(R.id.take_photo);
         mFile = new File(this.getExternalFilesDir(null), UUID.randomUUID().toString() + ".jpg");
-        takePictureButton.setOnClickListener(new View.OnClickListener() {
+        takePicture.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if(mFile.exists()){

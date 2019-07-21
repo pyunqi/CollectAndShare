@@ -113,6 +113,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginStart="151dp"
         android:layout_marginBottom="31dp"
-        android:background="@drawable/btn_cor"
+        android:background="@drawable/button_normal"
         android:text="Close" />
 </RelativeLayout>

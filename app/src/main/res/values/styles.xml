@@ -14,7 +14,7 @@
         <item name="windowNoTitle">true</item>
     </style>
 
-    <style name="Spinner" parent="android:Widget.TextView.SpinnerItem">
+    <style name="button_nor" parent="android:Widget.TextView.SpinnerItem">
 
     </style>
 </resources>
