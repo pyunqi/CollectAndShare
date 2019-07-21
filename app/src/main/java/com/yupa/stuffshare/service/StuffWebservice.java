@@ -23,8 +23,8 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 
-public class ManageStuff implements WSConstants {
-    private static final String TAG = "ManageStuff";
+public class StuffWebservice implements WSConstants {
+    private static final String TAG = "StuffWebservice";
 
     private static DBController dbController;
 

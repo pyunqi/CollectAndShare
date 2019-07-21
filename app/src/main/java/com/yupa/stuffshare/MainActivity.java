@@ -27,9 +27,9 @@ import android.widget.ListView;
 import com.yupa.stuffshare.camera.Camera;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
 import com.yupa.stuffshare.utils.StuffAdapter;
-import com.yupa.stuffshare.service.StuffManagement;
+import com.yupa.stuffshare.service.StuffLocalService;
 import com.yupa.stuffshare.utils.ShowMessage;
-import com.yupa.stuffshare.service.ManageStuff;
+import com.yupa.stuffshare.service.StuffWebservice;
 
 import java.io.File;
 
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
 
         @Override
         protected String doInBackground(String... parameters) {
-            String res = ManageStuff.syncServer(MainActivity.this,parameters[0]);
+            String res = StuffWebservice.syncServer(MainActivity.this,parameters[0]);
             return res;
         }
 
@@ -185,9 +185,9 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
                     // Create stuff adapter
                     final StuffAdapter stuffsAdapter;
                     if (sName.isEmpty()) {
-                        stuffsAdapter = new StuffAdapter(MainActivity.this, StuffManagement.getStuffs(MainActivity.this));
+                        stuffsAdapter = new StuffAdapter(MainActivity.this, StuffLocalService.getStuffs(MainActivity.this));
                     } else {
-                        stuffsAdapter = new StuffAdapter(MainActivity.this, StuffManagement.getStuffsByName(MainActivity.this, sName));
+                        stuffsAdapter = new StuffAdapter(MainActivity.this, StuffLocalService.getStuffsByName(MainActivity.this, sName));
                     }
                     // Set the adapter
                     if (!stuffsAdapter.isEmpty()) {
@@ -229,7 +229,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
                                                         .setMessage("Are you sure you want to delete this stuff?")
                                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                             public void onClick(DialogInterface dialog, int which) {
-                                                                StuffManagement.deleteStuff(MainActivity.this,
+                                                                StuffLocalService.deleteStuff(MainActivity.this,
                                                                         stuffsAdapter.getStuff(position).get_id(),
                                                                         stuffsAdapter.getStuff(position).get_picture());
                                                                 Thread listStuffs = new Thread(new ShowStuffsList((ListView) findViewById(R.id.listView)));

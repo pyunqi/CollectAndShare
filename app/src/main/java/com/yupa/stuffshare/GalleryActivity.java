@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import com.mindorks.placeholderview.PlaceHolderView;
 import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
-import com.yupa.stuffshare.service.StuffManagement;
+import com.yupa.stuffshare.service.StuffLocalService;
 import com.yupa.stuffshare.utils.GalleryItem;
 import com.yupa.stuffshare.utils.ImageHelper;
 
@@ -88,7 +88,7 @@ public class GalleryActivity extends AppCompatActivity implements AboutCASFragme
                 @Override
                 public void run() {
                     mGalleryView = findViewById(R.id.galleryView);
-                    for (Stuff s : StuffManagement.getStuffs(GalleryActivity.this)) {
+                    for (Stuff s : StuffLocalService.getStuffs(GalleryActivity.this)) {
                         mGalleryView.addView(new GalleryItem(ImageHelper.decodeSampledBitmapFromFile(s.get_picture(), 200, 350)));
 
                     }

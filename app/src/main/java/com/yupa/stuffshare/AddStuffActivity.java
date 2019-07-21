@@ -38,8 +38,8 @@ import com.google.android.gms.tasks.Task;
 import com.yupa.stuffshare.db.DBController;
 import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
+import com.yupa.stuffshare.service.StuffWebservice;
 import com.yupa.stuffshare.utils.ShowMessage;
-import com.yupa.stuffshare.service.ManageStuff;
 
 import java.io.File;
 
@@ -194,9 +194,9 @@ public class AddStuffActivity extends AppCompatActivity {
         @Override
         protected String doInBackground(Stuff... parameters) {
             Stuff item = parameters[0];
-            String res = ManageStuff.uploadImage(item.get_picture());
+            String res = StuffWebservice.uploadImage(item.get_picture());
             if ("200".equals(res)) {
-                res = ManageStuff.addStuff(item);
+                res = StuffWebservice.addStuff(item);
             }
             return res;
         }
