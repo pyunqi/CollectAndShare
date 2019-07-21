@@ -391,7 +391,7 @@ public class Camera extends AppCompatActivity {
         setContentView(R.layout.activity_camera);
         mTextureView = findViewById(R.id.texture);
         Button takePictureButton = findViewById(R.id.btnTakePic);
-        mFile = new File(this.getExternalFilesDir(null), UUID.randomUUID().toString() + "pic.jpg");
+        mFile = new File(this.getExternalFilesDir(null), UUID.randomUUID().toString() + ".jpg");
         takePictureButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

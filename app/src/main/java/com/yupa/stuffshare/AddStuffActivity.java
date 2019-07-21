@@ -2,6 +2,7 @@ package com.yupa.stuffshare;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -119,8 +120,6 @@ public class AddStuffActivity extends AppCompatActivity {
                 //get all needed values
                 String name = edtName.getText().toString();
                 int quantity = 1;
-
-
                 String tag = edtTag.getText().toString();
                 String description = edtDescription.getText().toString();
 
@@ -132,7 +131,6 @@ public class AddStuffActivity extends AppCompatActivity {
                     edtQuantity.setError("Quantity field is empty/not valid");
                     return;
                 }
-
                 try {
                     quantity = Integer.parseInt(edtQuantity.getText().toString());
                 } catch (NumberFormatException e) {
@@ -168,7 +166,8 @@ public class AddStuffActivity extends AppCompatActivity {
                 stuff.set_name(name);
                 stuff.set_quantity(quantity);
                 dbController.addStuff(stuff);
-                SubmitStuff submitStuff = new SubmitStuff();
+
+                SubmitStuff submitStuff = new SubmitStuff(AddStuffActivity.this);
                 submitStuff.execute(stuff);
 
             }
@@ -177,30 +176,48 @@ public class AddStuffActivity extends AppCompatActivity {
 
 
     private class SubmitStuff extends AsyncTask<Stuff, Integer, String> {
+
+        private ProgressDialog progressDialog;
+
+        public SubmitStuff(AddStuffActivity activity){
+            progressDialog = new ProgressDialog(activity);
+        }
+
         @Override
         protected void onPreExecute() {
-            ShowMessage.showCenter(AddStuffActivity.this, "Adding new stuff");
+            ShowMessage.showCenter(AddStuffActivity.this, "");
+            progressDialog.setMessage("Adding new stuff ...");
+            progressDialog.show();
+
         }
 
         @Override
         protected String doInBackground(Stuff... parameters) {
             Stuff item = parameters[0];
-            return ManageStuff.addStuff(item);
+            String res = ManageStuff.uploadImage(item.get_picture());
+            if ("200".equals(res)) {
+                res = ManageStuff.addStuff(item);
+            }
+            return res;
         }
 
         @Override
-        protected void onPostExecute(String errorStr) {
-            if (errorStr == null || errorStr.isEmpty()) {
-                ShowMessage.showCenter(AddStuffActivity.this, "Successfully add a new stuff");
+        protected void onPostExecute(String res) {
+            if(progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
+            if ("200".equals(res)) {
+                ShowMessage.showCenter(AddStuffActivity.this, "Successfully add a new Stuff");
                 Intent intent = new Intent(AddStuffActivity.this, MainActivity.class);
                 startActivity(intent);
                 AddStuffActivity.this.finish();
             } else {
-                ShowMessage.showCenter(AddStuffActivity.this, errorStr);
+                ShowMessage.showCenter(AddStuffActivity.this, "Failed add a new Stuff");
                 return;
             }
         }
     }
+
 
     /**
      * detect google service available or not
