@@ -11,7 +11,7 @@ import android.view.MenuItem;
 import com.mindorks.placeholderview.PlaceHolderView;
 import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
-import com.yupa.stuffshare.stuff.StuffManagement;
+import com.yupa.stuffshare.service.StuffManagement;
 import com.yupa.stuffshare.utils.GalleryItem;
 import com.yupa.stuffshare.utils.ImageHelper;
 

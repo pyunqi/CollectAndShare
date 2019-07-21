@@ -1,4 +1,4 @@
-package com.yupa.stuffshare.stuff;
+package com.yupa.stuffshare.service;
 
 import android.content.Context;
 

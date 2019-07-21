@@ -1,11 +1,14 @@
 package com.yupa.stuffshare;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v4.content.FileProvider;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -23,8 +26,10 @@ import android.widget.ListView;
 
 import com.yupa.stuffshare.camera.Camera;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
-import com.yupa.stuffshare.stuff.StuffAdapter;
-import com.yupa.stuffshare.stuff.StuffManagement;
+import com.yupa.stuffshare.utils.StuffAdapter;
+import com.yupa.stuffshare.service.StuffManagement;
+import com.yupa.stuffshare.utils.ShowMessage;
+import com.yupa.stuffshare.service.ManageStuff;
 
 import java.io.File;
 
@@ -71,7 +76,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
                 alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         String result = input.getText().toString();
-                        Thread  showStuffsList = new Thread(new ShowStuffsList((ListView) findViewById(R.id.listView),result));
+                        Thread showStuffsList = new Thread(new ShowStuffsList((ListView) findViewById(R.id.listView), result));
                         showStuffsList.start();
                     }
                 });
@@ -83,26 +88,70 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
                 alert.show();
             }
         });
-        Button btnSync = findViewById(R.id.btnSync);
+
+        FloatingActionButton btnSync = findViewById(R.id.btnSync);
         btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
-
-
-                //waring , it spend time.
-                //by anysctask
-                //get all record from server
-                //insert&update to local
-                //check file if exist
-                //download all files
-                //
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Sync up with remote server!")
+                        .setMessage("It may take a long time and flow，Are You Sure ?")
+                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                SyncServerData syncServerData = new SyncServerData();
+                                syncServerData.execute(MainActivity.this.getExternalFilesDir(null).getAbsolutePath());
+                                Thread listStuffs = new Thread(new ShowStuffsList((ListView) findViewById(R.id.listView)));
+                                listStuffs.start();
+                            }
+                        })
+                        .setNegativeButton(android.R.string.no, null)
+                        .setIcon(android.R.drawable.ic_dialog_alert)
+                        .show();
             }
         });
-
-
-
     }
+
+    /**
+     * Synchronize data task
+     */
+    private class SyncServerData extends AsyncTask<String, Integer, String> {
+
+        private ProgressDialog progressDialog;
+
+        public SyncServerData(){
+            progressDialog = new ProgressDialog(MainActivity.this);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("Start to synchronize server data ...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... parameters) {
+            String res = ManageStuff.syncServer(MainActivity.this,parameters[0]);
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            if(progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
+            if ("200".equals(res)) {
+                ShowMessage.showCenter(MainActivity.this, "Synchronizing finished!");
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                MainActivity.this.finish();
+            } else {
+                ShowMessage.showCenter(MainActivity.this, "Synchronizing failed!");
+                return;
+            }
+        }
+    }
+
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -118,7 +167,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
         String sName = "";
 
         //prepare for sorting or searching
-        ShowStuffsList(ListView v,String stuffName) {
+        ShowStuffsList(ListView v, String stuffName) {
             lv = v;
             sName = stuffName;
         }
@@ -135,10 +184,10 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
                 public void run() {
                     // Create stuff adapter
                     final StuffAdapter stuffsAdapter;
-                    if(sName.isEmpty()) {
-                        stuffsAdapter  = new StuffAdapter(MainActivity.this, StuffManagement.getStuffs(MainActivity.this));
-                    }else {
-                        stuffsAdapter =new StuffAdapter(MainActivity.this, StuffManagement.getStuffsByName(MainActivity.this,sName));
+                    if (sName.isEmpty()) {
+                        stuffsAdapter = new StuffAdapter(MainActivity.this, StuffManagement.getStuffs(MainActivity.this));
+                    } else {
+                        stuffsAdapter = new StuffAdapter(MainActivity.this, StuffManagement.getStuffsByName(MainActivity.this, sName));
                     }
                     // Set the adapter
                     if (!stuffsAdapter.isEmpty()) {

@@ -1,4 +1,4 @@
-package com.yupa.stuffshare.stuff;
+package com.yupa.stuffshare.utils;
 
 import android.content.Context;
 import android.view.LayoutInflater;

@@ -141,16 +141,28 @@ public class DBController {
                 new String[]{String.valueOf(stuff.get_id())});
     }
 
-    // Deleting single Stuff
-    public void deleteEmployee(Stuff stuff) {
-        SQLiteDatabase db = dbHelper.getWritableDatabase();
-
-        db.delete(DBHelper.TABLE_NAME, DBHelper.COL_STUFF_ID + " = ?",
-                new String[]{String.valueOf(stuff.get_id())});
-
-        System.out.println("Record Deleted");
-        db.close();
+    /**
+     * equal insert or update all stuffs
+     * @param stuffList
+     */
+    public void replaceAllStuff(List<Stuff> stuffList) {
+        database = dbHelper.getWritableDatabase();
+        for(Stuff stuff: stuffList) {
+            ContentValues values = new ContentValues();
+            values.put(DBHelper.COL_STUFF_ID, stuff.get_id());
+            values.put(DBHelper.COL_STUFF_NAME, stuff.get_name());
+            values.put(DBHelper.COL_STUFF_QUANTITY, stuff.get_quantity());
+            values.put(DBHelper.COL_STUFF_PICTURE, stuff.get_picture());
+            values.put(DBHelper.COL_STUFF_DESCRIPTION, stuff.get_description());
+            values.put(DBHelper.COL_STUFF_LATITUDE, stuff.get_latitude());
+            values.put(DBHelper.COL_STUFF_LONGITUDE, stuff.get_longitude());
+            values.put(DBHelper.COL_STUFF_TAG, stuff.get_tag());
+            // updating row
+            database.replace(DBHelper.TABLE_NAME, null, values);
+        }
+         database.close();
     }
+
 
     // Deleting single Stuff
     public void deleteStuff(int _id) {

@@ -1,4 +1,4 @@
-package com.yupa.stuffshare.webservice;
+package com.yupa.stuffshare.service;
 
 public interface WSConstants {
 

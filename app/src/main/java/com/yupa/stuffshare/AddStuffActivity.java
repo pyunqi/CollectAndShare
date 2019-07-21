@@ -39,7 +39,7 @@ import com.yupa.stuffshare.db.DBController;
 import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
 import com.yupa.stuffshare.utils.ShowMessage;
-import com.yupa.stuffshare.webservice.ManageStuff;
+import com.yupa.stuffshare.service.ManageStuff;
 
 import java.io.File;
 
@@ -167,7 +167,7 @@ public class AddStuffActivity extends AppCompatActivity {
                 stuff.set_quantity(quantity);
                 dbController.addStuff(stuff);
 
-                SubmitStuff submitStuff = new SubmitStuff(AddStuffActivity.this);
+                SubmitStuff submitStuff = new SubmitStuff();
                 submitStuff.execute(stuff);
 
             }
@@ -179,8 +179,8 @@ public class AddStuffActivity extends AppCompatActivity {
 
         private ProgressDialog progressDialog;
 
-        public SubmitStuff(AddStuffActivity activity){
-            progressDialog = new ProgressDialog(activity);
+        public SubmitStuff(){
+            progressDialog = new ProgressDialog(AddStuffActivity.this);
         }
 
         @Override
