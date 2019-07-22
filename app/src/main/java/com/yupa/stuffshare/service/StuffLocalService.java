@@ -53,6 +53,12 @@ public class StuffLocalService {
         dbController.updateStuff(stuff);
     }
 
+
+    public static void addStuff(Context context,Stuff stuff,int id){
+        dbController = new DBController(context);
+        dbController.addStuff(stuff);
+    }
+
     static class DelFile extends Thread {
 
         private String fPath;

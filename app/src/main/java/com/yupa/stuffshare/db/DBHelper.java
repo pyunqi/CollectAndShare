@@ -28,7 +28,7 @@ public class DBHelper extends SQLiteOpenHelper {
 
     // creation SQLite statement
     private static final String DATABASE_CREATE = "CREATE TABLE " + TABLE_NAME
-            + "(" + COL_STUFF_ID + " INTEGER PRIMARY KEY AUTOINCREMENT, "
+            + "(" + COL_STUFF_ID + " INTEGER PRIMARY KEY, "
             + COL_STUFF_NAME + " TEXT NOT NULL, " + COL_STUFF_PICTURE + " TEXT NOT NUll," +
             COL_STUFF_QUANTITY + " TEXT NOT NULL, " + COL_STUFF_DESCRIPTION +
             " TEXT NOT NULL, " + COL_STUFF_LATITUDE + " DOUBLE , " + COL_STUFF_LONGITUDE + " DOUBLE , " +

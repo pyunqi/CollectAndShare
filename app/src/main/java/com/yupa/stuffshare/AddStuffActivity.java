@@ -38,6 +38,7 @@ import com.google.android.gms.tasks.Task;
 import com.yupa.stuffshare.db.DBController;
 import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
+import com.yupa.stuffshare.service.StuffLocalService;
 import com.yupa.stuffshare.service.StuffWebservice;
 import com.yupa.stuffshare.utils.ShowMessage;
 
@@ -149,9 +150,8 @@ public class AddStuffActivity extends AppCompatActivity {
                     edtDescription.setError("description field is empty/not valid");
                     return;
                 }
-                //init db controller
-                dbController = new DBController(AddStuffActivity.this);
 
+                //assembly stuff
                 Stuff stuff = new Stuff();
                 if (mCurrentLocation != null) {
                     stuff.set_latitude(mCurrentLocation.getAltitude());
@@ -165,8 +165,6 @@ public class AddStuffActivity extends AppCompatActivity {
                 stuff.set_tag(tag);
                 stuff.set_name(name);
                 stuff.set_quantity(quantity);
-                dbController.addStuff(stuff);
-
                 SubmitStuff submitStuff = new SubmitStuff();
                 submitStuff.execute(stuff);
 
@@ -179,31 +177,38 @@ public class AddStuffActivity extends AppCompatActivity {
 
         private ProgressDialog progressDialog;
 
-        public SubmitStuff(){
+        public SubmitStuff() {
             progressDialog = new ProgressDialog(AddStuffActivity.this);
         }
 
         @Override
         protected void onPreExecute() {
-            ShowMessage.showCenter(AddStuffActivity.this, "");
-            progressDialog.setMessage("Adding new stuff ...");
+            progressDialog.setMessage("Adding a new Stuff ...");
             progressDialog.show();
-
         }
 
         @Override
         protected String doInBackground(Stuff... parameters) {
             Stuff stuff = parameters[0];
-            String res = StuffWebservice.uploadImage(stuff.get_picture());
+            String localPath = stuff.get_picture();
+            String res = StuffWebservice.uploadImage(localPath);
+            int id = 0;
             if ("200".equals(res)) {
-                res = StuffWebservice.addStuff(stuff);
+                id = StuffWebservice.addStuff(stuff, "data");
+            }
+            if (id > 0) {
+                stuff.set_id(id);
+                stuff.set_picture(localPath);
+                StuffLocalService.addStuff(AddStuffActivity.this, stuff, id);
+            } else {
+                return "failed";
             }
             return res;
         }
 
         @Override
         protected void onPostExecute(String res) {
-            if(progressDialog.isShowing()){
+            if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
             if ("200".equals(res)) {
@@ -213,7 +218,6 @@ public class AddStuffActivity extends AppCompatActivity {
                 AddStuffActivity.this.finish();
             } else {
                 ShowMessage.showCenter(AddStuffActivity.this, "Failed add a new Stuff");
-                return;
             }
         }
     }

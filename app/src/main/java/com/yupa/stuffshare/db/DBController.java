@@ -28,7 +28,7 @@ public class DBController {
         database = dbHelper.getWritableDatabase();
 
         ContentValues values = new ContentValues();
-
+        values.put(DBHelper.COL_STUFF_ID, stuff.get_id());
         values.put(DBHelper.COL_STUFF_NAME, stuff.get_name());
         values.put(DBHelper.COL_STUFF_PICTURE, stuff.get_picture());
         values.put(DBHelper.COL_STUFF_QUANTITY, stuff.get_quantity());
@@ -40,7 +40,7 @@ public class DBController {
         database.insert(DBHelper.TABLE_NAME, null, values);
 
         System.out.println("Record Added");
-        database.close();
+        close();
     }
 
     public Stuff getStuff(int _id) {

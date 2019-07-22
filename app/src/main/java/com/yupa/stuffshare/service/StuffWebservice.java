@@ -42,12 +42,23 @@ public class StuffWebservice implements WSConstants {
      * @param stuff
      * @return
      */
-    public static String addStuff(Stuff stuff) {
+    public static int addStuff(Stuff stuff,String key) {
         setPicName(stuff);
         String jsonString = JSON.toJSONString(stuff);
         RequestBody req = RequestBody.create(jsonHeader, jsonString);
         Request request = new Request.Builder().url(addUrl).post(req).build();
-        return executeOK3Post(request, "code");
+        int id = 0;
+        OkHttpClient client = new OkHttpClient();
+        try {
+            Response response = client.newCall(request).execute();
+            if (response.isSuccessful()) {
+                JSONObject ret = JSON.parseObject(response.body().string());
+                id = ret.getInteger(key);
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return id;
     }
 
     /**
@@ -91,7 +102,10 @@ public class StuffWebservice implements WSConstants {
         for (Stuff stuff : stuffList) {
             final File stuffPic = new File(stuff.get_picture());
             if (!stuffPic.exists()) {
-                Request downloadRequest = new Request.Builder().url(downloadUrl).get().build();
+                JSONObject imageName = new JSONObject();
+                imageName.put("name",stuffPic.getName());
+                RequestBody reqGet = RequestBody.create(jsonHeader, imageName.toJSONString());
+                Request downloadRequest = new Request.Builder().url(downloadUrl).post(reqGet).build();
                 OkHttpClient client = new OkHttpClient();
                 try {
                     Response response = client.newCall(downloadRequest).execute();
