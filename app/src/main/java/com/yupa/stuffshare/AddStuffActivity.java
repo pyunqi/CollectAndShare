@@ -193,10 +193,10 @@ public class AddStuffActivity extends AppCompatActivity {
 
         @Override
         protected String doInBackground(Stuff... parameters) {
-            Stuff item = parameters[0];
-            String res = StuffWebservice.uploadImage(item.get_picture());
+            Stuff stuff = parameters[0];
+            String res = StuffWebservice.uploadImage(stuff.get_picture());
             if ("200".equals(res)) {
-                res = StuffWebservice.addStuff(item);
+                res = StuffWebservice.addStuff(stuff);
             }
             return res;
         }

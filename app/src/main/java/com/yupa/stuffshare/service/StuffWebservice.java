@@ -30,6 +30,7 @@ public class StuffWebservice implements WSConstants {
 
     static final MediaType jsonHeader = MediaType.parse(jsonType);
     static final String addUrl = hostUrl + "addStuff.php";
+    static final String updateUrl = hostUrl + "updateStuff.php";
     static final String uploadUrl = hostUrl + "uploadImage.php";
     static final String downloadUrl = hostUrl + "downloadImage.php";
     static final String queryAllUrl = hostUrl + "queryAll.php";
@@ -42,9 +43,7 @@ public class StuffWebservice implements WSConstants {
      * @return
      */
     public static String addStuff(Stuff stuff) {
-        String fileName = stuff.get_picture();
-        fileName = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.length());
-        stuff.set_picture(fileName);
+        setPicName(stuff);
         String jsonString = JSON.toJSONString(stuff);
         RequestBody req = RequestBody.create(jsonHeader, jsonString);
         Request request = new Request.Builder().url(addUrl).post(req).build();
@@ -111,10 +110,31 @@ public class StuffWebservice implements WSConstants {
         return "200";
     }
 
+    /**
+     * update stuff in mysql
+     * @param stuff
+     * @return
+     */
+    public static String updateStuff(Stuff stuff) {
+        String localPath = stuff.get_picture();
+        setPicName(stuff);
+        String jsonString = JSON.toJSONString(stuff);
+        stuff.set_picture(localPath);
+        RequestBody req = RequestBody.create(jsonHeader, jsonString);
+        Request request = new Request.Builder().url(updateUrl).post(req).build();
+        return executeOK3Post(request, "code");
+    }
+
+    private static void setPicName(Stuff stuff) {
+        String fileName = stuff.get_picture();
+        fileName = fileName.substring(fileName.lastIndexOf("/") + 1, fileName.length());
+        stuff.set_picture(fileName);
+    }
+
 
     private static String executeOK3Post(Request request, String key) {
         OkHttpClient client = new OkHttpClient();
-        String res = null;
+        String res;
         try {
             Response response = client.newCall(request).execute();
 
@@ -131,5 +151,6 @@ public class StuffWebservice implements WSConstants {
         }
         return res;
     }
+
 
 }

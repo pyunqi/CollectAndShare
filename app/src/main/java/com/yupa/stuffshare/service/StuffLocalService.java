@@ -48,6 +48,10 @@ public class StuffLocalService {
         dF.start();
     }
 
+    public static void updateStuff(Context context,Stuff stuff){
+        dbController = new DBController(context);
+        dbController.updateStuff(stuff);
+    }
 
     static class DelFile extends Thread {
 

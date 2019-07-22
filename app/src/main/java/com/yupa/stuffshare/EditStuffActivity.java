@@ -2,10 +2,12 @@ package com.yupa.stuffshare;
 
 import android.Manifest;
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
@@ -34,6 +36,8 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.yupa.stuffshare.entity.Stuff;
+import com.yupa.stuffshare.service.StuffLocalService;
+import com.yupa.stuffshare.service.StuffWebservice;
 import com.yupa.stuffshare.utils.ShowMessage;
 import com.yupa.stuffshare.db.DBController;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
@@ -157,7 +161,6 @@ public class EditStuffActivity extends AppCompatActivity {
                     return;
                 }
                 //init db controller
-                dbController = new DBController(EditStuffActivity.this);
 
                 Stuff stuff = new Stuff();
                 if (mCurrentLocation != null) {
@@ -173,13 +176,57 @@ public class EditStuffActivity extends AppCompatActivity {
                 stuff.set_tag(tag);
                 stuff.set_name(name);
                 stuff.set_quantity(quantity);
-                dbController.updateStuff(stuff);
-                Intent intent = new Intent(EditStuffActivity.this, MainActivity.class);
-                startActivity(intent);
-                EditStuffActivity.this.finish();
+                UpdateStuff updateStuff = new UpdateStuff();
+                updateStuff.execute(stuff);
+
 
             }
         });
+    }
+
+    /**
+     * update stuff
+     */
+    private class UpdateStuff extends AsyncTask<Stuff, Integer, String> {
+        private ProgressDialog progressDialog;
+
+        public UpdateStuff(){
+            progressDialog = new ProgressDialog(EditStuffActivity.this);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            super.onPreExecute();
+            progressDialog.setMessage("Start to update server data ...");
+            progressDialog.show();
+
+        }
+
+        @Override
+        protected String doInBackground(Stuff... parameters) {
+            if(progressDialog.isShowing()){
+                progressDialog.dismiss();
+            }
+            Stuff stuff = parameters[0];
+            String res = StuffWebservice.updateStuff(stuff);
+            if("200".equals(res)) {
+                StuffLocalService.updateStuff(EditStuffActivity.this, parameters[0]);
+            }
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            super.onPostExecute(res);
+            if("200".equals(res)) {
+                ShowMessage.showCenter(EditStuffActivity.this, "Update finished ...");
+                Intent intent = new Intent(EditStuffActivity.this, MainActivity.class);
+                startActivity(intent);
+                EditStuffActivity.this.finish();
+            }else {
+                ShowMessage.showCenter(EditStuffActivity.this, "Update failed ...");
+            }
+        }
     }
 
     /**
