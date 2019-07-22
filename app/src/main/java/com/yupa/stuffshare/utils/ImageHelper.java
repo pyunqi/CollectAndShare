@@ -43,7 +43,7 @@ public class ImageHelper {
 
         // First decode with inJustDecodeBounds=true to check dimensions
         final BitmapFactory.Options options = new BitmapFactory.Options();
-        options.inJustDecodeBounds = true;/*w ww  .  j  a va 2 s . c o  m*/
+        options.inJustDecodeBounds = true;
         BitmapFactory.decodeFile(pathFile, options);
 
         // Calculate inSampleSize

@@ -6,6 +6,8 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.content.res.Configuration;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.graphics.ImageFormat;
 import android.graphics.Matrix;
 import android.graphics.Point;
@@ -225,6 +227,7 @@ public class Camera extends AppCompatActivity {
         public void onImageAvailable(ImageReader reader) {
             mBackgroundHandler.post(new ImageSaver(reader.acquireNextImage(), mFile));
         }
+
 
     };
 
@@ -856,14 +859,14 @@ public class Camera extends AppCompatActivity {
 
         @Override
         public void run() {
-
             ByteBuffer buffer = mImage.getPlanes()[0].getBuffer();
             byte[] bytes = new byte[buffer.remaining()];
             buffer.get(bytes);
+            Bitmap myBitmap = BitmapFactory.decodeByteArray(bytes,0,bytes.length,null);
             FileOutputStream output = null;
             try {
                 output = new FileOutputStream(mFile);
-                output.write(bytes);
+                myBitmap.compress(Bitmap.CompressFormat.JPEG,7,output);
             } catch (IOException e) {
                 e.printStackTrace();
             } finally {
