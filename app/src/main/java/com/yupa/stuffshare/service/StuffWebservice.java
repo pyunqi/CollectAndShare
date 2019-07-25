@@ -7,7 +7,6 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
-import com.yupa.stuffshare.MainActivity;
 import com.yupa.stuffshare.db.DBController;
 import com.yupa.stuffshare.entity.Stuff;
 

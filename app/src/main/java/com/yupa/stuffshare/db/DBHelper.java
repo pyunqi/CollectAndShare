@@ -5,7 +5,7 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
 public class DBHelper extends SQLiteOpenHelper {
-
+    //SqlLite
     //Table Name
     public static final String TABLE_NAME = "tbStuff";
     //Column Names

@@ -179,10 +179,10 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
                                                 startActivity(Intent.createChooser(emailIntent, "Send email..."));
                                                 return true;
                                             case R.id.facebook:
-                                                String picaName =stuffsAdapter.getStuff(position).get_picture();
-                                                picaName = picaName.substring(picaName.lastIndexOf("/")+1,picaName.length());
+                                                String picaName = stuffsAdapter.getStuff(position).get_picture();
+                                                picaName = picaName.substring(picaName.lastIndexOf("/") + 1, picaName.length());
                                                 ShareLinkContent content = new ShareLinkContent.Builder()
-                                                        .setContentUrl(Uri.parse(imageBaseUrl+picaName))
+                                                        .setContentUrl(Uri.parse(imageBaseUrl + picaName))
                                                         .setQuote("My wonderful Stuff.")
                                                         .build();
                                                 ShareDialog.show(MainActivity.this, content);
@@ -325,7 +325,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            if ("200".equals(res)) {
+            if ("200" .equals(res)) {
                 ShowMessage.showCenter(MainActivity.this, "Synchronizing finished!");
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -358,7 +358,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
         protected String doInBackground(Stuff... parameters) {
             Stuff stuff = parameters[0];
             String res = StuffWebservice.deleteStuff(stuff);
-            if("200".equals(res)) {
+            if ("200" .equals(res)) {
                 StuffLocalService.deleteStuff(MainActivity.this, stuff.get_id(), stuff.get_picture());
             }
             return res;
@@ -369,7 +369,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            if ("200".equals(res)) {
+            if ("200" .equals(res)) {
                 ShowMessage.showCenter(MainActivity.this, "Stuff Deleted!");
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);

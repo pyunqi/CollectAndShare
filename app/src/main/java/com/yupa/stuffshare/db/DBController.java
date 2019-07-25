@@ -11,7 +11,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class DBController {
-    // Database fields
+    // Sql lite Database fields
     private DBHelper dbHelper;
     private SQLiteDatabase database;
 
