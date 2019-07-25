@@ -7,6 +7,7 @@ import android.util.Log;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.yupa.stuffshare.MainActivity;
 import com.yupa.stuffshare.db.DBController;
 import com.yupa.stuffshare.entity.Stuff;
 
@@ -31,6 +32,7 @@ public class StuffWebservice implements WSConstants {
     static final MediaType jsonHeader = MediaType.parse(jsonType);
     static final String addUrl = hostUrl + "addStuff.php";
     static final String updateUrl = hostUrl + "updateStuff.php";
+    static final String deleteUrl = hostUrl + "deleteStuff.php";
     static final String uploadUrl = hostUrl + "uploadImage.php";
     static final String downloadUrl = hostUrl + "downloadImage.php";
     static final String queryAllUrl = hostUrl + "queryAll.php";
@@ -42,7 +44,7 @@ public class StuffWebservice implements WSConstants {
      * @param stuff
      * @return
      */
-    public static int addStuff(Stuff stuff,String key) {
+    public static int addStuff(Stuff stuff, String key) {
         setPicName(stuff);
         String jsonString = JSON.toJSONString(stuff);
         RequestBody req = RequestBody.create(jsonHeader, jsonString);
@@ -103,9 +105,9 @@ public class StuffWebservice implements WSConstants {
             final File stuffPic = new File(stuff.get_picture());
             if (!stuffPic.exists()) {
                 JSONObject imageName = new JSONObject();
-                imageName.put("name",stuffPic.getName());
-                RequestBody reqGet = RequestBody.create(jsonHeader, imageName.toJSONString());
-                Request downloadRequest = new Request.Builder().url(downloadUrl).post(reqGet).build();
+                imageName.put("name", stuffPic.getName());
+                RequestBody reqSync = RequestBody.create(jsonHeader, imageName.toJSONString());
+                Request downloadRequest = new Request.Builder().url(downloadUrl).post(reqSync).build();
                 OkHttpClient client = new OkHttpClient();
                 try {
                     Response response = client.newCall(downloadRequest).execute();
@@ -125,7 +127,23 @@ public class StuffWebservice implements WSConstants {
     }
 
     /**
+     * delete stuff from server
+     * @param stuff
+     * @return
+     */
+    public static String deleteStuff(Stuff stuff) {
+        JSONObject deleteStuff = new JSONObject();
+        deleteStuff.put("id", stuff.get_id());
+        setPicName(stuff);
+        deleteStuff.put("pic", stuff.get_picture());
+        RequestBody req = RequestBody.create(jsonHeader, deleteStuff.toJSONString());
+        Request request = new Request.Builder().url(deleteUrl).post(req).build();
+        return executeOK3Post(request, "code");
+    }
+
+    /**
      * update stuff in mysql
+     *
      * @param stuff
      * @return
      */
@@ -153,7 +171,8 @@ public class StuffWebservice implements WSConstants {
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
-                JSONObject ret = JSON.parseObject(response.body().string());
+                String resJSONString= response.body().string();
+                JSONObject ret = JSON.parseObject(resJSONString);
                 res = ret.getString(key);
                 Log.i("Success", ret.getString("msg"));
             } else {

@@ -20,6 +20,7 @@
     <!--Google map api key-->
     <string name="google_map_api_key">AIzaSyBOhJBQieHp4JRRMe9f9CpfJL6tOzyZQlk</string>
 
-    <!-- host related-->
+    <!-- facebook related-->
+    <string name="facebook_app_id">1322832574537057</string>
 
 </resources>

@@ -1,7 +1,6 @@
 package com.yupa.stuffshare;
 
 import android.app.ProgressDialog;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -14,22 +13,23 @@ import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.PopupMenu;
 import android.support.v7.widget.Toolbar;
-import android.util.DisplayMetrics;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.widget.ShareDialog;
 import com.yupa.stuffshare.camera.Camera;
+import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
-import com.yupa.stuffshare.utils.StuffAdapter;
 import com.yupa.stuffshare.service.StuffLocalService;
-import com.yupa.stuffshare.utils.ShowMessage;
 import com.yupa.stuffshare.service.StuffWebservice;
+import com.yupa.stuffshare.utils.ShowMessage;
+import com.yupa.stuffshare.utils.StuffAdapter;
 
 import java.io.File;
 
@@ -37,7 +37,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
 
     private Handler handler = new Handler();
     AboutCASFragment casFragment = AboutCASFragment.newInstance();
-    private int mScreenWidth;
+    final static String imageBaseUrl = "http://yupa399.co.nf/showImage.php?pic=";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -112,46 +112,6 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
         });
     }
 
-    /**
-     * Synchronize data task
-     */
-    private class SyncServerData extends AsyncTask<String, Integer, String> {
-
-        private ProgressDialog progressDialog;
-
-        public SyncServerData(){
-            progressDialog = new ProgressDialog(MainActivity.this);
-        }
-
-        @Override
-        protected void onPreExecute() {
-            progressDialog.setMessage("Start to synchronize server data ...");
-            progressDialog.show();
-        }
-
-        @Override
-        protected String doInBackground(String... parameters) {
-            String res = StuffWebservice.syncServer(MainActivity.this,parameters[0]);
-            return res;
-        }
-
-        @Override
-        protected void onPostExecute(String res) {
-            if(progressDialog.isShowing()){
-                progressDialog.dismiss();
-            }
-            if ("200".equals(res)) {
-                ShowMessage.showCenter(MainActivity.this, "Synchronizing finished!");
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
-                MainActivity.this.finish();
-            } else {
-                ShowMessage.showCenter(MainActivity.this, "Synchronizing failed!");
-                return;
-            }
-        }
-    }
-
 
     @Override
     public void onFragmentInteraction(Uri uri) {
@@ -218,14 +178,23 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
                                                 emailIntent.putExtra(Intent.EXTRA_TEXT, stuffsAdapter.getStuff(position).get_description());
                                                 startActivity(Intent.createChooser(emailIntent, "Send email..."));
                                                 return true;
-                                            case R.id.edit:
+                                            case R.id.facebook:
+                                                String picaName =stuffsAdapter.getStuff(position).get_picture();
+                                                picaName = picaName.substring(picaName.lastIndexOf("/")+1,picaName.length());
+                                                ShareLinkContent content = new ShareLinkContent.Builder()
+                                                        .setContentUrl(Uri.parse(imageBaseUrl+picaName))
+                                                        .setQuote("My wonderful Stuff.")
+                                                        .build();
+                                                ShareDialog.show(MainActivity.this, content);
+                                                return true;
+                                            case R.id.update:
                                                 Intent intent = new Intent(MainActivity.this, EditStuffActivity.class);
                                                 intent.putExtra("stuff", stuffsAdapter.getStuff(position));
                                                 startActivity(intent);
                                                 return true;
                                             case R.id.del:
                                                 new AlertDialog.Builder(MainActivity.this)
-                                                        .setTitle("Delete stuff")
+                                                        .setTitle("Delete Stuff.")
                                                         .setMessage("Are you sure you want to delete this stuff?")
                                                         .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                                             public void onClick(DialogInterface dialog, int which) {
@@ -239,6 +208,23 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
                                                         .setNegativeButton(android.R.string.no, null)
                                                         .setIcon(android.R.drawable.ic_dialog_alert)
                                                         .show();
+                                                return true;
+                                            case R.id.delSync:
+                                                new AlertDialog.Builder(MainActivity.this)
+                                                        .setTitle("Delete Stuff and Synchronize.")
+                                                        .setMessage("This Action Will Delete Server Side Data Too, Are you sure?")
+                                                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                                            public void onClick(DialogInterface dialog, int which) {
+                                                                SyncDeleteData syncDeleteData = new SyncDeleteData();
+                                                                syncDeleteData.execute(stuffsAdapter.getStuff(position));
+                                                                Thread listStuffs = new Thread(new ShowStuffsList((ListView) findViewById(R.id.listView)));
+                                                                listStuffs.start();
+                                                            }
+                                                        })
+                                                        .setNegativeButton(android.R.string.no, null)
+                                                        .setIcon(android.R.drawable.ic_dialog_alert)
+                                                        .show();
+                                                return true;
                                         }
                                         return true;
                                     }
@@ -256,12 +242,6 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
         }
     }
 
-    private void getmScreenWidth() {
-        WindowManager wm = (WindowManager) this.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics dm = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(dm);
-        mScreenWidth = dm.widthPixels;
-    }
 
     @Override
     protected void onResume() {
@@ -316,4 +296,89 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
         Intent intent = new Intent(this, Camera.class);
         startActivity(intent);
     }
+
+    /**
+     * Synchronize data task
+     */
+    private class SyncServerData extends AsyncTask<String, Integer, String> {
+
+        private ProgressDialog progressDialog;
+
+        public SyncServerData() {
+            progressDialog = new ProgressDialog(MainActivity.this);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("Start to synchronize server data ...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... parameters) {
+            String res = StuffWebservice.syncServer(MainActivity.this, parameters[0]);
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            if ("200".equals(res)) {
+                ShowMessage.showCenter(MainActivity.this, "Synchronizing finished!");
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                MainActivity.this.finish();
+            } else {
+                ShowMessage.showCenter(MainActivity.this, "Synchronizing failed!");
+                return;
+            }
+        }
+    }
+
+    /**
+     * delete data task
+     */
+    private class SyncDeleteData extends AsyncTask<Stuff, Integer, String> {
+
+        private ProgressDialog progressDialog;
+
+        public SyncDeleteData() {
+            progressDialog = new ProgressDialog(MainActivity.this);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("Start to Delete data forever...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(Stuff... parameters) {
+            Stuff stuff = parameters[0];
+            String res = StuffWebservice.deleteStuff(stuff);
+            if("200".equals(res)) {
+                StuffLocalService.deleteStuff(MainActivity.this, stuff.get_id(), stuff.get_picture());
+            }
+            return res;
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            if ("200".equals(res)) {
+                ShowMessage.showCenter(MainActivity.this, "Stuff Deleted!");
+                Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                startActivity(intent);
+                MainActivity.this.finish();
+            } else {
+                ShowMessage.showCenter(MainActivity.this, "Deleting failed!");
+                return;
+            }
+        }
+    }
+
 }

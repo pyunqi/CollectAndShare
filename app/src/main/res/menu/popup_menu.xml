@@ -1,16 +1,22 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
-  <item
-      android:id="@+id/share"
-      android:title="Share"/>
+    <item
+        android:id="@+id/share"
+        android:title="Share from email" />
+    <item
+        android:id="@+id/facebook"
+        android:title="Share to Facebook" />
 
-  <item
-      android:id="@+id/edit"
-      android:title="Edit"/>
+    <item
+        android:id="@+id/update"
+        android:title="Sync Update" />
 
-  <item
-      android:id="@+id/del"
-      android:title="Delete"/>
+    <item
+        android:id="@+id/del"
+        android:title="Delete" />
+    <item
+        android:id="@+id/delSync"
+        android:title="Sync Delete" />
 
 </menu>
