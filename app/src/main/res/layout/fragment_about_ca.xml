@@ -4,7 +4,6 @@
     android:id="@+id/rlAbout"
     android:layout_width="fill_parent"
     android:layout_height="480dp"
-    android:layout_marginTop="50dp"
     android:background="#D7FFFFFF"
     android:clickable="true"
     android:gravity="center"
