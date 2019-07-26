@@ -1,8 +1,11 @@
 package com.yupa.stuffshare;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -28,6 +31,7 @@ import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
 import com.yupa.stuffshare.service.StuffLocalService;
 import com.yupa.stuffshare.service.StuffWebservice;
+import com.yupa.stuffshare.utils.ShowDialog;
 import com.yupa.stuffshare.utils.ShowMessage;
 import com.yupa.stuffshare.utils.StuffAdapter;
 
@@ -51,6 +55,10 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
         addStuff.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                if (!isNetworkAvailable()) {
+                    ShowDialog.show(MainActivity.this, "Network issue", "Please Connect to Internet first!");
+                    return;
+                }
                 addStuff();
             }
         });
@@ -68,24 +76,22 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
         btnSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                AlertDialog.Builder alert = new AlertDialog.Builder(MainActivity.this);
-                alert.setTitle("Fuzzy Searching by stuff name");
-                alert.setMessage("Input stuff name");
                 final EditText input = new EditText(MainActivity.this);
-                alert.setView(input);
-                alert.setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                    public void onClick(DialogInterface dialog, int whichButton) {
-                        String result = input.getText().toString();
-                        Thread showStuffsList = new Thread(new ShowStuffsList((ListView) findViewById(R.id.listView), result));
-                        showStuffsList.start();
-                    }
-                });
-                alert.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                new AlertDialog.Builder(MainActivity.this)
+                        .setTitle("Fuzzy Searching by stuff name")
+                        .setMessage("Input stuff name")
+                        .setView(input)
+                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int whichButton) {
+                                String result = input.getText().toString();
+                                Thread showStuffsList = new Thread(new ShowStuffsList((ListView) findViewById(R.id.listView), result));
+                                showStuffsList.start();
+                            }
+                        }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
                         // Canceled.
                     }
-                });
-                alert.show();
+                }).show();
             }
         });
 
@@ -93,7 +99,10 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
         btnSync.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                if (!isNetworkAvailable()) {
+                    ShowDialog.show(MainActivity.this, "Network issue", "Please Connect to Internet first!");
+                    return;
+                }
                 new AlertDialog.Builder(MainActivity.this)
                         .setTitle("Sync up with remote server!")
                         .setMessage("It may take a long time and flow，Are You Sure ?")
@@ -297,6 +306,13 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
         startActivity(intent);
     }
 
+    private boolean isNetworkAvailable() {
+        ConnectivityManager connectivityManager
+                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
+        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
+    }
+
     /**
      * Synchronize data task
      */
@@ -325,7 +341,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            if ("200" .equals(res)) {
+            if ("200".equals(res)) {
                 ShowMessage.showCenter(MainActivity.this, "Synchronizing finished!");
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);
@@ -358,7 +374,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
         protected String doInBackground(Stuff... parameters) {
             Stuff stuff = parameters[0];
             String res = StuffWebservice.deleteStuff(stuff);
-            if ("200" .equals(res)) {
+            if ("200".equals(res)) {
                 StuffLocalService.deleteStuff(MainActivity.this, stuff.get_id(), stuff.get_picture());
             }
             return res;
@@ -369,7 +385,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
             if (progressDialog.isShowing()) {
                 progressDialog.dismiss();
             }
-            if ("200" .equals(res)) {
+            if ("200".equals(res)) {
                 ShowMessage.showCenter(MainActivity.this, "Stuff Deleted!");
                 Intent intent = new Intent(MainActivity.this, MainActivity.class);
                 startActivity(intent);
