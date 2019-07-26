@@ -257,9 +257,10 @@ public class AddStuffActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "found location1");
                             mCurrentLocation = (Location) task.getResult();
-                            moveCamera(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()), DEFAULT_ZOOM);
-                            mMap.setMyLocationEnabled(true);
-
+                            if(mCurrentLocation!=null) {
+                                moveCamera(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()), DEFAULT_ZOOM);
+                                mMap.setMyLocationEnabled(true);
+                            }
                         } else {
                             ShowMessage.showCenter(AddStuffActivity.this, "No Location information!!!");
                             Log.d(TAG, "failed location1");

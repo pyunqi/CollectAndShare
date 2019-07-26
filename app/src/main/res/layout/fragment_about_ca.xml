@@ -66,7 +66,7 @@
         android:layout_marginTop="376dp"
         android:autoLink="all"
         android:background="#00FFFFFF"
-        android:text="AIS WebSite:   https://www.ais.ac.nz/"
+        android:text="APP WebSite:   http://yupa399.co.nf/index.html"
         android:textAlignment="center" />
 
     <TextView

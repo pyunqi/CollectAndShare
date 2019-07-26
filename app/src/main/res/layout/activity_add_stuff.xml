@@ -5,12 +5,13 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context="com.yupa.stuffshare.AddStuffActivity">
+
     <ProgressBar
         android:id="@+id/pbHeaderProgress"
         style="@style/button_nor"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" >
-    </ProgressBar>
+        android:layout_height="wrap_content"></ProgressBar>
+
     <android.support.v7.widget.Toolbar
         android:id="@+id/add_toolbar"
         android:layout_width="match_parent"
@@ -31,35 +32,38 @@
             android:textSize="20dp" />
     </android.support.v7.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/ivPhoto"
-        android:layout_width="173dp"
-        android:layout_height="148dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="57dp"
-        android:contentDescription="TODO"
-        app:srcCompat="@android:color/darker_gray"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
+    <LinearLayout
+        android:id="@+id/lyTop"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/add_toolbar"
+        android:orientation="horizontal">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="238dp"
-        android:layout_height="149dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="173dp"
-        android:layout_marginTop="56dp"
-        tools:context=".MapsActivity" />
+        <ImageView
+            android:id="@+id/ivPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_weight="0.5"
+            android:contentDescription="TODO"
+            app:srcCompat="@android:color/darker_gray" />
+
+        <fragment
+            android:id="@+id/map"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_weight="0.5"
+            tools:context=".MapsActivity" />
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/ivPhoto"
+        android:layout_below="@id/lyTop"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -109,7 +113,7 @@
 
         <EditText
             android:id="@+id/edtDescription"
-            android:layout_width="381dp"
+            android:layout_width="match_parent"
             android:layout_height="111dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -138,6 +142,7 @@
 
     <FrameLayout
         android:id="@+id/a_about"
+        android:layout_below="@id/add_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

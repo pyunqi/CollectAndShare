@@ -26,35 +26,39 @@
             android:textSize="20dp" />
     </android.support.v7.widget.Toolbar>
 
-    <ImageView
-        android:id="@+id/ivUPhoto"
-        android:layout_width="185dp"
-        android:layout_height="208dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="0dp"
-        android:layout_marginTop="0dp"
-        android:contentDescription="TODO"
-        app:srcCompat="@android:color/darker_gray"
-        tools:layout_editor_absoluteX="8dp"
-        tools:layout_editor_absoluteY="8dp" />
+    <LinearLayout
+        android:id="@+id/lyTop"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:layout_below="@id/edit_toolbar"
+        android:orientation="horizontal">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment"
-        android:layout_width="226dp"
-        android:layout_height="208dp"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="185dp"
-        android:layout_marginTop="0dp"
-        tools:context=".MapsActivity" />
+        <ImageView
+            android:id="@+id/ivUPhoto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_weight="0.5"
+            android:contentDescription="TODO"
+            app:srcCompat="@android:color/darker_gray" />
+
+        <fragment
+            android:id="@+id/Umap"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="4dp"
+            android:layout_marginRight="4dp"
+            android:layout_weight="0.5"
+            tools:context=".MapsActivity" />
+
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/ivUPhoto"
+        android:layout_below="@id/lyTop"
         android:orientation="vertical"
         android:padding="16dp">
 
@@ -104,7 +108,7 @@
 
         <EditText
             android:id="@+id/edtUDescription"
-            android:layout_width="381dp"
+            android:layout_width="match_parent"
             android:layout_height="111dp"
             android:layout_marginTop="10dp"
             android:layout_marginBottom="10dp"
@@ -113,11 +117,10 @@
             android:fitsSystemWindows="true"
             android:gravity="top"
             android:hint="Description"
-            android:importantForAutofill="no"
             android:inputType="textMultiLine"
             android:padding="5dp"
             android:singleLine="false"
-            android:textSize="12sp" />
+            android:textSize="12sp"  />
 
         <Button
             android:id="@+id/btnUpdate"
@@ -134,6 +137,7 @@
 
     <FrameLayout
         android:id="@+id/e_about"
+        android:layout_below="@id/edit_toolbar"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 

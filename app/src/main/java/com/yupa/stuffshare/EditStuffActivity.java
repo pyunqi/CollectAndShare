@@ -263,9 +263,10 @@ public class EditStuffActivity extends AppCompatActivity {
                         if (task.isSuccessful()) {
                             Log.d(TAG, "found location1");
                             mCurrentLocation = (Location) task.getResult();
-                            moveCamera(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()), DEFAULT_ZOOM);
-                            mMap.setMyLocationEnabled(true);
-
+                            if(mCurrentLocation!=null) {
+                                moveCamera(new LatLng(mCurrentLocation.getLatitude(), mCurrentLocation.getLongitude()), DEFAULT_ZOOM);
+                                mMap.setMyLocationEnabled(true);
+                            }
                         } else {
                             ShowMessage.showCenter(EditStuffActivity.this, "No Location information!!!");
                             Log.d(TAG, "failed location1");
@@ -287,7 +288,7 @@ public class EditStuffActivity extends AppCompatActivity {
      * set up basic map
      */
     private void initMap() {
-        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.map);
+        SupportMapFragment mapFragment = (SupportMapFragment) getSupportFragmentManager().findFragmentById(R.id.Umap);
         mapFragment.getMapAsync(new OnMapReadyCallback() {
             @Override
             public void onMapReady(GoogleMap googleMap) {
