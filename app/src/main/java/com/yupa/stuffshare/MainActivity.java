@@ -82,9 +82,9 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
                         .setView(input)
                         .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int whichButton) {
-                                String result = input.getText().toString();
-                                Thread showStuffsList = new Thread(new ShowStuffsList((ListView) findViewById(R.id.listView), result));
-                                showStuffsList.start();
+                                String stuffName = input.getText().toString();
+                                SearchStuffsByNameFromServer searchStuffsByNameFromServer = new SearchStuffsByNameFromServer();
+                                searchStuffsByNameFromServer.execute(MainActivity.this.getExternalFilesDir(null).getAbsolutePath(),stuffName);
                             }
                         }).setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int whichButton) {
@@ -342,11 +342,50 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
             }
             if ("200".equals(res)) {
                 ShowMessage.showCenter(MainActivity.this, "Synchronizing finished!");
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
-                MainActivity.this.finish();
+                Thread showStuffsList = new Thread(new ShowStuffsList((ListView) findViewById(R.id.listView)));
+                showStuffsList.start();
             } else {
                 ShowMessage.showCenter(MainActivity.this, "Synchronizing failed!");
+                return;
+            }
+        }
+    }
+
+    /**
+     * Search stuff and Synchronize data
+     */
+    private class SearchStuffsByNameFromServer extends AsyncTask<String, Integer, String> {
+
+        private ProgressDialog progressDialog;
+        private String stuffName;
+
+        public SearchStuffsByNameFromServer() {
+            progressDialog = new ProgressDialog(MainActivity.this);
+        }
+
+        @Override
+        protected void onPreExecute() {
+            progressDialog.setMessage("Searching stuffs from server ...");
+            progressDialog.show();
+        }
+
+        @Override
+        protected String doInBackground(String... parameters) {
+            stuffName = StuffWebservice.searchStuffByName(MainActivity.this,parameters[0], parameters[1]);
+            return parameters[1];
+        }
+
+        @Override
+        protected void onPostExecute(String res) {
+            if (progressDialog.isShowing()) {
+                progressDialog.dismiss();
+            }
+            if (res !=null) {
+                ShowMessage.showCenter(MainActivity.this, "Searching finished!");
+                Thread showStuffsList = new Thread(new ShowStuffsList((ListView) findViewById(R.id.listView),stuffName));
+                showStuffsList.start();
+            } else {
+                ShowMessage.showCenter(MainActivity.this, "something wrong!");
                 return;
             }
         }
@@ -386,9 +425,8 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
             }
             if ("200".equals(res)) {
                 ShowMessage.showCenter(MainActivity.this, "Stuff Deleted!");
-                Intent intent = new Intent(MainActivity.this, MainActivity.class);
-                startActivity(intent);
-                MainActivity.this.finish();
+                Thread showStuffsList = new Thread(new ShowStuffsList((ListView) findViewById(R.id.listView)));
+                showStuffsList.start();
             } else {
                 ShowMessage.showCenter(MainActivity.this, "Deleting failed!");
                 return;

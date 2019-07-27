@@ -15,6 +15,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
+import java.util.List;
 
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
@@ -30,6 +31,7 @@ public class StuffWebservice implements WSConstants {
 
     static final MediaType jsonHeader = MediaType.parse(jsonType);
     static final String addUrl = hostUrl + "addStuff.php";
+    static final String searchUrl = hostUrl + "searchStuff.php";
     static final String updateUrl = hostUrl + "updateStuff.php";
     static final String deleteUrl = hostUrl + "deleteStuff.php";
     static final String uploadUrl = hostUrl + "uploadImage.php";
@@ -88,12 +90,15 @@ public class StuffWebservice implements WSConstants {
      */
     public static String syncServer(Context context, String bPath) {
         // load all data , did not do split page since in this case rows limit to 50.
-        JSONObject queryAll = new JSONObject();
         dbController = new DBController(context);
+        JSONObject queryAll = new JSONObject();
         queryAll.put("queryData", "all");
         RequestBody req = RequestBody.create(jsonHeader, queryAll.toJSONString());
         Request request = new Request.Builder().url(queryAllUrl).post(req).build();
         String dataStr = executeOK3Post(request, "data");
+        if (dataStr == null){
+            return "";
+        }
         ArrayList<Stuff> stuffList = (ArrayList<Stuff>) JSON.parseArray(dataStr, Stuff.class);
         //replace local db's data and non-exists pic path to a new List
         for (Stuff stuff : stuffList) {
@@ -103,22 +108,7 @@ public class StuffWebservice implements WSConstants {
         for (Stuff stuff : stuffList) {
             final File stuffPic = new File(stuff.get_picture());
             if (!stuffPic.exists()) {
-                JSONObject imageName = new JSONObject();
-                imageName.put("name", stuffPic.getName());
-                RequestBody reqSync = RequestBody.create(jsonHeader, imageName.toJSONString());
-                Request downloadRequest = new Request.Builder().url(downloadUrl).post(reqSync).build();
-                OkHttpClient client = new OkHttpClient();
-                try {
-                    Response response = client.newCall(downloadRequest).execute();
-                    final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
-                    OutputStream os;
-                    os = new FileOutputStream(stuffPic);
-                    bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
-                    os.flush();
-                    os.close();
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+                downloadImage(stuffPic);
             }
         }
 
@@ -126,7 +116,64 @@ public class StuffWebservice implements WSConstants {
     }
 
     /**
+     * download the image
+     * @param stuffPic
+     */
+    private static void downloadImage(File stuffPic) {
+        JSONObject imageName = new JSONObject();
+        imageName.put("name", stuffPic.getName());
+        RequestBody reqSync = RequestBody.create(jsonHeader, imageName.toJSONString());
+        Request downloadRequest = new Request.Builder().url(downloadUrl).post(reqSync).build();
+        OkHttpClient client = new OkHttpClient();
+        try {
+            Response response = client.newCall(downloadRequest).execute();
+            final Bitmap bitmap = BitmapFactory.decodeStream(response.body().byteStream());
+            OutputStream os;
+            os = new FileOutputStream(stuffPic);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, os);
+            os.flush();
+            os.close();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * search data from remote server
+     *
+     * @param bPath
+     * @param stuffName
+     * @return
+     */
+    public static String searchStuffByName(Context context,String bPath, String stuffName) {
+
+        JSONObject query = new JSONObject();
+        query.put("stuffName", stuffName);
+        RequestBody req = RequestBody.create(jsonHeader, query.toJSONString());
+        Request request = new Request.Builder().url(searchUrl).post(req).build();
+        String dataStr = executeOK3Post(request, "data");
+        if (dataStr == null){
+            return "";
+        }
+        ArrayList<Stuff> stuffList = (ArrayList<Stuff>) JSON.parseArray(dataStr, Stuff.class);
+        for (Stuff stuff : stuffList) {
+            stuff.set_picture(bPath + "/" + stuff.get_picture());
+        }
+        dbController = new DBController(context);
+        dbController.replaceAllStuff(stuffList);
+        for (Stuff stuff : stuffList) {
+            final File stuffPic = new File(stuff.get_picture());
+            if (!stuffPic.exists()) {
+                downloadImage(stuffPic);
+            }
+        }
+        return stuffName;
+    }
+
+
+    /**
      * delete stuff from server
+     *
      * @param stuff
      * @return
      */
@@ -170,7 +217,7 @@ public class StuffWebservice implements WSConstants {
             Response response = client.newCall(request).execute();
 
             if (response.isSuccessful()) {
-                String resJSONString= response.body().string();
+                String resJSONString = response.body().string();
                 JSONObject ret = JSON.parseObject(resJSONString);
                 res = ret.getString(key);
                 Log.i("Success", ret.getString("msg"));
