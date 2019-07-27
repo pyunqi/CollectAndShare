@@ -64,8 +64,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_below="@id/lyTop"
-        android:orientation="vertical"
-        android:padding="16dp">
+        android:orientation="vertical">
 
 
         <EditText
@@ -73,7 +72,7 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:layout_marginRight="8dp"
             android:hint="Name"
             android:inputType="textPersonName"
@@ -85,9 +84,9 @@
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="4dp"
             android:autofillHints=""
             android:backgroundTint="@color/colorPrimaryDark"
             android:hint="Quantity"
@@ -101,9 +100,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginLeft="8dp"
-            android:layout_marginTop="5dp"
+            android:layout_marginTop="2dp"
             android:layout_marginRight="8dp"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="4dp"
             android:backgroundTint="@color/colorPrimaryDark"
             android:hint="Tag"
             android:inputType="textPersonName"
@@ -114,9 +113,9 @@
         <EditText
             android:id="@+id/edtDescription"
             android:layout_width="match_parent"
-            android:layout_height="111dp"
-            android:layout_marginTop="10dp"
-            android:layout_marginBottom="10dp"
+            android:layout_height="90dp"
+            android:layout_marginTop="2dp"
+            android:layout_marginBottom="4dp"
             android:backgroundTint="@color/colorPrimaryDark"
             android:breakStrategy="balanced"
             android:fitsSystemWindows="true"

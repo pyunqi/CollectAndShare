@@ -1,4 +1,4 @@
-package com.yupa.stuffshare.utils;
+package com.yupa.stuffshare.cview;
 
 import android.annotation.TargetApi;
 import android.content.Context;

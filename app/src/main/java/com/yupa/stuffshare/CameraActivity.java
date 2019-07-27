@@ -1,4 +1,4 @@
-package com.yupa.stuffshare.camera;
+package com.yupa.stuffshare;
 
 import android.Manifest;
 import android.app.Activity;
@@ -40,8 +40,7 @@ import android.view.View;
 import android.widget.ImageView;
 import android.widget.Toast;
 
-import com.yupa.stuffshare.AddStuffActivity;
-import com.yupa.stuffshare.R;
+import com.yupa.stuffshare.cview.AutoFitTextureView;
 import com.yupa.stuffshare.utils.ShowMessage;
 
 import java.io.File;
@@ -57,9 +56,9 @@ import java.util.UUID;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.TimeUnit;
 
-public class Camera extends AppCompatActivity {
+public class CameraActivity extends AppCompatActivity {
 
-    private static final String TAG = "C&S Camera";
+    private static final String TAG = "C&S CameraActivity";
 
     /**
      * Conversion from screen rotation to JPEG orientation.
@@ -75,27 +74,27 @@ public class Camera extends AppCompatActivity {
     }
 
     /**
-     * Camera state: Showing camera preview.
+     * CameraActivity state: Showing camera preview.
      */
     private static final int STATE_PREVIEW = 0;
 
     /**
-     * Camera state: Waiting for the focus to be locked.
+     * CameraActivity state: Waiting for the focus to be locked.
      */
     private static final int STATE_WAITING_LOCK = 1;
 
     /**
-     * Camera state: Waiting for the exposure to be precapture state.
+     * CameraActivity state: Waiting for the exposure to be precapture state.
      */
     private static final int STATE_WAITING_PRECAPTURE = 2;
 
     /**
-     * Camera state: Waiting for the exposure state to be something other than precapture.
+     * CameraActivity state: Waiting for the exposure state to be something other than precapture.
      */
     private static final int STATE_WAITING_NON_PRECAPTURE = 3;
 
     /**
-     * Camera state: Picture was taken.
+     * CameraActivity state: Picture was taken.
      */
     private static final int STATE_PICTURE_TAKEN = 4;
 
@@ -187,7 +186,7 @@ public class Camera extends AppCompatActivity {
             mCameraOpenCloseLock.release();
             cameraDevice.close();
             mCameraDevice = null;
-            Activity activity = Camera.this;
+            Activity activity = CameraActivity.this;
             if (null != activity) {
                 activity.finish();
             }
@@ -331,10 +330,10 @@ public class Camera extends AppCompatActivity {
      * @param text The message to show
      */
     private void showToast(final String text) {
-        Camera.this.runOnUiThread(new Runnable() {
+        CameraActivity.this.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                Toast.makeText(Camera.this, text, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CameraActivity.this, text, Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -414,10 +413,10 @@ public class Camera extends AppCompatActivity {
 
                 }
                 //add pic file to next activity
-                Intent intent = new Intent(Camera.this, AddStuffActivity.class);
+                Intent intent = new Intent(CameraActivity.this, AddStuffActivity.class);
                 intent.putExtra("picFile", mFile);
                 startActivity(intent);
-                Camera.this.finish();
+                CameraActivity.this.finish();
             }
         });
     }
@@ -445,7 +444,7 @@ public class Camera extends AppCompatActivity {
         if (requestCode == REQUEST_CAMERA_PERMISSION) {
             if (grantResults[0] == PackageManager.PERMISSION_DENIED) {
                 // close the app
-                ShowMessage.showCenter(Camera.this, "Need Camera permission!! Please Allow it!!");
+                ShowMessage.showCenter(CameraActivity.this, "Need CameraActivity permission!! Please Allow it!!");
                 finish();
             }
         }
@@ -459,7 +458,7 @@ public class Camera extends AppCompatActivity {
      * @param height The height of available size for camera preview
      */
     private void setUpCameraOutputs(int width, int height) {
-        Activity activity = Camera.this;
+        Activity activity = CameraActivity.this;
         CameraManager manager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
         try {
             for (String cameraId : manager.getCameraIdList()) {
@@ -567,12 +566,12 @@ public class Camera extends AppCompatActivity {
     private void openCamera(int width, int height) {
         // Add permission for camera and let user grant the permission
         if (ActivityCompat.checkSelfPermission(this, Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(Camera.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
+            ActivityCompat.requestPermissions(CameraActivity.this, new String[]{Manifest.permission.CAMERA, Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CAMERA_PERMISSION);
             return;
         }
         setUpCameraOutputs(width, height);
         configureTransform(width, height);
-        Activity activity = Camera.this;
+        Activity activity = CameraActivity.this;
         CameraManager manager = (CameraManager) activity.getSystemService(Context.CAMERA_SERVICE);
         try {
             if (!mCameraOpenCloseLock.tryAcquire(2500, TimeUnit.MILLISECONDS)) {
@@ -772,7 +771,7 @@ public class Camera extends AppCompatActivity {
      */
     private void captureStillPicture() {
         try {
-            final Activity activity = Camera.this;
+            final Activity activity = CameraActivity.this;
             if (null == mCameraDevice) {
                 return;
             }

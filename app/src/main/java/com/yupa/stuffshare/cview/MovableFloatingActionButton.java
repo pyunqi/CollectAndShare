@@ -1,4 +1,4 @@
-package com.yupa.stuffshare.utils;
+package com.yupa.stuffshare.cview;
 
 import android.content.Context;
 import android.support.design.widget.FloatingActionButton;

@@ -26,7 +26,6 @@ import android.widget.ListView;
 
 import com.facebook.share.model.ShareLinkContent;
 import com.facebook.share.widget.ShareDialog;
-import com.yupa.stuffshare.camera.Camera;
 import com.yupa.stuffshare.entity.Stuff;
 import com.yupa.stuffshare.fragments.AboutCASFragment;
 import com.yupa.stuffshare.service.StuffLocalService;
@@ -302,7 +301,7 @@ public class MainActivity extends AppCompatActivity implements AboutCASFragment.
      * go to take stuff pic step
      */
     private void addStuff() {
-        Intent intent = new Intent(this, Camera.class);
+        Intent intent = new Intent(this, CameraActivity.class);
         startActivity(intent);
     }
 

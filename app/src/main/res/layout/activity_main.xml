@@ -85,7 +85,7 @@
             android:textColor="#00ACC1" />
     </LinearLayout>
 
-    <com.yupa.stuffshare.utils.MovableFloatingActionButton
+    <com.yupa.stuffshare.cview.MovableFloatingActionButton
         android:id="@+id/btnSync"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

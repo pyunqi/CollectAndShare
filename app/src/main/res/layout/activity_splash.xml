@@ -5,7 +5,7 @@
     android:background="@color/colorPrimary">
 
     // your package where MutedVideoView is added
-    <com.yupa.stuffshare.utils.MutedVideoView
+    <com.yupa.stuffshare.cview.MutedVideoView
         android:id="@+id/video_view"
         android:layout_width="match_parent"
         android:layout_alignParentRight="true"
