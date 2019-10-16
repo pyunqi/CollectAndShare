@@ -58,8 +58,6 @@ public class EditStuffActivity extends AppCompatActivity {
     private final float DEFAULT_ZOOM = 15f;
     Stuff mStuff;
     Button btnUpdate;
-    //DB
-    private DBController dbController;
     //UI
     EditText edtName, edtQuantitiy, edtTag, edtDescription;
 

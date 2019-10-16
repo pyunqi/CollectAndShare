@@ -60,25 +60,4 @@ public class SplashActivity extends AppCompatActivity {
         finish();
     }
 
-    public class SplashThread extends Thread {
-
-        @Override
-        public void run() {
-            try {
-                Thread.sleep(2500);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            handler.post(new Runnable() {
-                @Override
-                public void run() {
-                    // Start the MainActivity
-                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                    overridePendingTransition(R.anim.fade_in, R.anim.fade_out);
-                    // Close this activity
-                }
-            });
-
-        }
-    }
 }
